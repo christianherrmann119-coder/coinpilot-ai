@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CoinPilot AI</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+background: #0f1117;
+color: white;
+font-family: Arial;
+padding: 20px;
+}
+
+h1 {
+color: #00ff99;
+}
+
+input, button {
+padding: 12px;
+border-radius: 10px;
+border: none;
+}
+
+button {
+background: #00ff99;
+cursor: pointer;
+font-weight: bold;
+}
+
+.card {
+background: #1a1d26;
+padding: 20px;
+margin-top: 20px;
+border-radius: 15px;
+}
+
+.grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+gap: 10px;
+}
+
+.stat {
+background: #222733;
+padding: 12px;
+border-radius: 10px;
+line-height: 1.5;
+}
+
+pre {
+color: #7dff7d;
+white-space: pre-wrap;
+word-wrap: break-word;
+overflow-wrap: break-word;
+max-width: 100%;
+line-height: 1.5;
+background: #111820;
+padding: 15px;
+border-radius: 10px;
+}
+
+canvas {
+background: #111820;
+border-radius: 10px;
+padding: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🚀 CoinPilot AI PRO</h1>
+
+<input id="coin" placeholder="bitcoin">
+<button onclick="analyze()">Analysieren</button>
+
+<div id="result"></div>
+
+<script>
+let chart;
+
+function money(value) {
+return Number(value).toLocaleString("de-DE", {
+minimumFractionDigits: 2,
+maximumFractionDigits: 2
+});
+}
+
+function bigNumber(value) {
+return Number(value).toLocaleString("de-DE");
+}
+
+async function analyze() {
+const coin = document.getElementById("coin").value || "bitcoin";
+
+const res = await fetch("/api/analyze", {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify({ coin })
+});
+
+const data = await res.json();
+
+if (data.error) {
+document.getElementById("result").innerHTML = "Fehler beim Laden";
+return;
+}
+
+document.getElementById("result").innerHTML = `
+<div class="card">
+
+<h2>${data.coin}</h2>
+
+<div class="grid">
+<div class="stat">💰 Preis<br>$${money(data.price)}</div>
+<div class="stat">📊 Market Cap<br>$${bigNumber(data.marketCap)}</div>
+<div class="stat">📈 24h<br>${Number(data.change24h).toFixed(2)}%</div>
+<div class="stat">♻️ Supply<br>${bigNumber(data.circulating)}</div>
+<div class="stat">🏁 Max Supply<br>${data.maxSupply === "Nicht definiert" ? data.maxSupply : bigNumber(data.maxSupply)}</div>
+<div class="stat">😨 Fear & Greed<br>${data.fearGreed}</div>
+<div class="stat">⚡ Momentum<br>${data.momentum}</div>
+<div class="stat">📉 RSI<br>${data.rsi}</div>
+</div>
+
+<br>
+
+<div class="grid">
+<div class="stat">🟢 Support<br>$${money(data.support)}</div>
+<div class="stat">🔴 Resistance<br>$${money(data.resistance)}</div>
+<div class="stat">🎯 Buy Zone<br>$${money(data.buyZone)}</div>
+<div class="stat">🚀 Breakout<br>$${money(data.breakoutTarget)}</div>
+</div>
+
+<br>
+
+<div class="grid">
+<div class="stat">🎯 Ziel oben 1<br>$${money(data.upsideTarget1)}</div>
+<div class="stat">🎯 Ziel oben 2<br>$${money(data.upsideTarget2)}</div>
+<div class="stat">🎯 Ziel oben 3<br>$${money(data.upsideTarget3)}</div>
+<div class="stat">🛡️ Ziel unten 1<br>$${money(data.downsideTarget1)}</div>
+<div class="stat">🛡️ Ziel unten 2<br>$${money(data.downsideTarget2)}</div>
+<div class="stat">🛡️ Ziel unten 3<br>$${money(data.downsideTarget3)}</div>
+</div>
+
+<br>
+
+<div class="grid">
+<div class="stat">🔵 Fib 0.382<br>$${money(data.fib382)}</div>
+<div class="stat">🟠 Fib 0.5<br>$${money(data.fib50)}</div>
+<div class="stat">🟣 Fib 0.618<br>$${money(data.fib618)}</div>
+<div class="stat">🚀 Fib 1.272<br>$${money(data.fib1272)}</div>
+<div class="stat">🚀 Fib 1.618<br>$${money(data.fib1618)}</div>
+<div class="stat">🚀 Fib 2.618<br>$${money(data.fib2618)}</div>
+</div>
+
+<br>
+
+<div class="grid">
+<div class="stat">📘 EMA20<br>$${money(data.ema20)}</div>
+<div class="stat">📙 EMA50<br>$${money(data.ema50)}</div>
+<div class="stat">📕 EMA200<br>$${money(data.ema200)}</div>
+<div class="stat">🌊 Elliott Bull<br>$${money(data.elliottBull)}</div>
+<div class="stat">🔻 Elliott Bear<br>$${money(data.elliottBear)}</div>
+</div>
+
+<h3>📈 7 Tage Chart</h3>
+<canvas id="chart"></canvas>
+
+<h3>🧠 AI Analyse</h3>
+<pre>${data.analysis}</pre>
+
+<p style="font-size:12px;color:#aaa;">
+Hinweis: Keine Anlageberatung. Die Werte sind technische Orientierungszonen und können falsch sein.
+</p>
+
+</div>
+`;
+
+drawChart(data.chart7d);
+}
+
+function drawChart(c) {
+const prices = c.prices.map(p => p[1]);
+const labels = c.prices.map(p => new Date(p[0]).toLocaleDateString("de-DE"));
+
+const ctx = document.getElementById("chart").getContext("2d");
+
+if (chart) {
+chart.destroy();
+}
+
+chart = new Chart(ctx, {
+type: "line",
+data: {
+labels: labels,
+datasets: [{
+label: "Preis",
+data: prices,
+borderColor: "#00ff99",
+backgroundColor: "rgba(0,255,153,0.08)",
+tension: 0.3,
+pointRadius: 2,
+pointHoverRadius: 7,
+fill: true
+}]
+},
+options: {
+interaction: {
+mode: "index",
+intersect: false
+},
+plugins: {
+tooltip: {
+enabled: true,
+callbacks: {
+label: function(context) {
+return "Preis: $" + money(context.raw);
+}
+}
+},
+legend: {
+labels: { color: "white" }
+}
+},
+scales: {
+x: {
+ticks: { color: "white" }
+},
+y: {
+ticks: { color: "white" }
+}
+}
+}
+});
+}
+</script>
+
+</body>
+</html>
