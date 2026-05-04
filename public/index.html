@@ -15,12 +15,20 @@ padding: 20px;
 
 h1 {
 color: #00ff99;
+font-size: 34px;
 }
 
 input, button {
 padding: 12px;
 border-radius: 10px;
 border: none;
+margin: 4px;
+font-size: 15px;
+}
+
+input {
+width: 280px;
+max-width: 90%;
 }
 
 button {
@@ -66,6 +74,100 @@ background: #111820;
 border-radius: 10px;
 padding: 10px;
 }
+
+.login {
+background: #1a1d26;
+padding: 20px;
+border-radius: 15px;
+max-width: 420px;
+margin-top: 30px;
+}
+
+.small {
+font-size: 12px;
+color: #aaa;
+}
+
+.suggestion {
+background: #222733;
+padding: 10px;
+border-radius: 8px;
+margin-top: 5px;
+cursor: pointer;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.suggestion:hover {
+background: #2d3445;
+}
+
+.pill {
+background: #30364a;
+color: white;
+border-radius: 20px;
+margin: 4px;
+}
+
+.danger {
+color: #ff6b6b;
+font-weight: bold;
+}
+
+.loading {
+color: #00ff99;
+font-weight: bold;
+margin-top: 15px;
+background: #111820;
+padding: 15px;
+border-radius: 10px;
+}
+
+.watch-card {
+background: #222733;
+padding: 10px;
+border-radius: 10px;
+margin: 5px;
+display: inline-block;
+min-width: 160px;
+}
+
+.positive {
+color: #00ff99;
+}
+
+.negative {
+color: #ff6b6b;
+}
+
+@media (max-width: 600px) {
+body {
+padding: 12px;
+}
+
+h1 {
+font-size: 26px;
+}
+
+input {
+width: 100%;
+box-sizing: border-box;
+}
+
+button {
+width: 100%;
+margin-top: 6px;
+}
+
+.grid {
+grid-template-columns: 1fr;
+}
+
+.pill {
+width: auto;
+}
+}
 </style>
 </head>
 
@@ -73,13 +175,98 @@ padding: 10px;
 
 <h1>🚀 CoinPilot AI PRO</h1>
 
-<input id="coin" placeholder="bitcoin">
-<button onclick="analyze()">Analysieren</button>
+<div id="loginBox" class="login">
+<h3>🔐 Zugang</h3>
+<p>Bitte Passwort eingeben:</p>
+<input id="passwordInput" type="password" placeholder="Passwort">
+<button onclick="login()">Einloggen</button>
+<p id="loginError" class="danger"></p>
+</div>
 
+<div id="app" style="display:none;">
+
+<input id="coin" placeholder="Coin suchen, z.B. bitcoin, eth, kite">
+<button onclick="analyze()">Analysieren</button>
+<button onclick="addCurrentToWatchlist()">⭐ Zur Watchlist</button>
+
+<div id="suggestions"></div>
+
+<h3>⏱️ Zeitraum</h3>
+<button class="pill" onclick="setDays('1')">1 Tag</button>
+<button class="pill" onclick="setDays('7')">7 Tage</button>
+<button class="pill" onclick="setDays('30')">30 Tage</button>
+<button class="pill" onclick="setDays('365')">1 Jahr</button>
+
+<h3>🔥 Top 10 Schnellstart</h3>
+<div>
+<button class="pill" onclick="quickAnalyze('bitcoin')">Bitcoin</button>
+<button class="pill" onclick="quickAnalyze('ethereum')">Ethereum</button>
+<button class="pill" onclick="quickAnalyze('solana')">Solana</button>
+<button class="pill" onclick="quickAnalyze('ripple')">XRP</button>
+<button class="pill" onclick="quickAnalyze('cardano')">Cardano</button>
+<button class="pill" onclick="quickAnalyze('dogecoin')">Dogecoin</button>
+<button class="pill" onclick="quickAnalyze('chainlink')">Chainlink</button>
+<button class="pill" onclick="quickAnalyze('avalanche-2')">Avalanche</button>
+<button class="pill" onclick="quickAnalyze('polkadot')">Polkadot</button>
+<button class="pill" onclick="quickAnalyze('tron')">Tron</button>
+</div>
+
+<h3>⭐ Watchlist</h3>
+<div id="watchlist"></div>
+
+<h3>🕘 Letzte Analysen</h3>
+<div id="history"></div>
+
+<div id="status"></div>
 <div id="result"></div>
+
+</div>
 
 <script>
 let chart;
+let selectedCoinId = "";
+let selectedCoinName = "";
+let lastData = null;
+let selectedDays = "7";
+
+function getPassword() {
+return localStorage.getItem("coinpilot_password") || "";
+}
+
+function login() {
+const password = document.getElementById("passwordInput").value;
+
+if (!password) {
+document.getElementById("loginError").innerText = "Bitte Passwort eingeben.";
+return;
+}
+
+localStorage.setItem("coinpilot_password", password);
+document.getElementById("loginBox").style.display = "none";
+document.getElementById("app").style.display = "block";
+loadWatchlist();
+loadHistory();
+}
+
+if (getPassword()) {
+document.getElementById("loginBox").style.display = "none";
+document.getElementById("app").style.display = "block";
+loadWatchlist();
+loadHistory();
+}
+
+function setDays(days) {
+selectedDays = days;
+setStatus("Zeitraum gesetzt: " + labelDays(days));
+}
+
+function labelDays(days) {
+if (days === "1") return "1 Tag";
+if (days === "7") return "7 Tage";
+if (days === "30") return "30 Tage";
+if (days === "365") return "1 Jahr";
+return days + " Tage";
+}
 
 function money(value) {
 return Number(value).toLocaleString("de-DE", {
@@ -89,39 +276,153 @@ maximumFractionDigits: 2
 }
 
 function bigNumber(value) {
+if (value === "Nicht definiert") return value;
 return Number(value).toLocaleString("de-DE");
 }
 
-async function analyze() {
-const coin = document.getElementById("coin").value || "bitcoin";
+function setStatus(text) {
+document.getElementById("status").innerHTML =
+'<div class="loading">' + text + "</div>";
+}
 
-const res = await fetch("/api/analyze", {
-method: "POST",
-headers: { "Content-Type": "application/json" },
-body: JSON.stringify({ coin })
+function clearStatus() {
+document.getElementById("status").innerHTML = "";
+}
+
+let searchTimer;
+
+document.getElementById("coin").addEventListener("input", function () {
+clearTimeout(searchTimer);
+
+searchTimer = setTimeout(searchCoins, 400);
+});
+
+async function searchCoins() {
+const query = document.getElementById("coin").value.trim();
+
+selectedCoinId = "";
+
+if (query.length < 2) {
+document.getElementById("suggestions").innerHTML = "";
+return;
+}
+
+try {
+const res = await fetch("/api/search?q=" + encodeURIComponent(query), {
+headers: {
+"x-app-password": getPassword()
+}
 });
 
 const data = await res.json();
 
-if (data.error) {
-document.getElementById("result").innerHTML = "Fehler beim Laden";
+if (!res.ok || data.error) {
+document.getElementById("suggestions").innerHTML =
+'<p class="danger">' + (data.error || "Suche nicht verfügbar") + "</p>";
 return;
 }
+
+document.getElementById("suggestions").innerHTML = data.coins.map(function (coin) {
+return (
+'<div class="suggestion" onclick="selectCoin(\'' +
+coin.id +
+"', '" +
+coin.name.replace(/'/g, "") +
+"')\">" +
+'<img src="' +
+coin.thumb +
+'" width="24">' +
+'<div><strong>' +
+coin.name +
+" (" +
+coin.symbol.toUpperCase() +
+")</strong><br><span class='small'>ID: " +
+coin.id +
+" | Rang: " +
+coin.marketCapRank +
+"</span></div></div>"
+);
+}).join("");
+} catch (e) {
+document.getElementById("suggestions").innerHTML =
+'<p class="danger">Coin-Suche aktuell nicht erreichbar.</p>';
+}
+}
+
+function selectCoin(id, name) {
+selectedCoinId = id;
+selectedCoinName = name;
+document.getElementById("coin").value = id;
+document.getElementById("suggestions").innerHTML = "";
+}
+
+function quickAnalyze(id) {
+document.getElementById("coin").value = id;
+selectedCoinId = id;
+analyze();
+}
+
+async function analyze() {
+const coinInput = selectedCoinId || document.getElementById("coin").value || "bitcoin";
+
+setStatus("1/4 🔍 Coin wird gesucht...");
+
+setTimeout(function () {
+setStatus("2/4 📊 Marktdaten werden geladen...");
+}, 500);
+
+setTimeout(function () {
+setStatus("3/4 📈 Chart wird erstellt...");
+}, 1200);
+
+setTimeout(function () {
+setStatus("4/4 🤖 AI Analyse läuft...");
+}, 2000);
+
+const res = await fetch("/api/analyze", {
+method: "POST",
+headers: {
+"Content-Type": "application/json",
+"x-app-password": getPassword()
+},
+body: JSON.stringify({
+coin: coinInput,
+days: selectedDays
+})
+});
+
+const data = await res.json();
+
+if (!res.ok || data.error) {
+clearStatus();
+document.getElementById("result").innerHTML =
+'<div class="card"><p class="danger">' +
+data.error +
+'</p><p class="small">Tipp: CoinGecko öffnen und den letzten Teil der URL als Coin-ID verwenden. Beispiel: coingecko.com/de/munze/kite-ai → kite-ai</p></div>';
+return;
+}
+
+lastData = data;
+saveHistory(data);
+
+clearStatus();
 
 document.getElementById("result").innerHTML = `
 <div class="card">
 
-<h2>${data.coin}</h2>
+<h2><img src="${data.image}" width="24"> ${data.coin} (${data.symbol.toUpperCase()})</h2>
+<p class="small">CoinGecko-ID: ${data.coinId} | Zeitraum: ${labelDays(data.days)}</p>
 
 <div class="grid">
 <div class="stat">💰 Preis<br>$${money(data.price)}</div>
 <div class="stat">📊 Market Cap<br>$${bigNumber(data.marketCap)}</div>
 <div class="stat">📈 24h<br>${Number(data.change24h).toFixed(2)}%</div>
 <div class="stat">♻️ Supply<br>${bigNumber(data.circulating)}</div>
-<div class="stat">🏁 Max Supply<br>${data.maxSupply === "Nicht definiert" ? data.maxSupply : bigNumber(data.maxSupply)}</div>
+<div class="stat">🏁 Max Supply<br>${bigNumber(data.maxSupply)}</div>
 <div class="stat">😨 Fear & Greed<br>${data.fearGreed}</div>
 <div class="stat">⚡ Momentum<br>${data.momentum}</div>
 <div class="stat">📉 RSI<br>${data.rsi}</div>
+<div class="stat">🧠 Score<br>${data.marketScore.score}/100<br>${data.marketScore.label}</div>
 </div>
 
 <br>
@@ -165,20 +466,21 @@ document.getElementById("result").innerHTML = `
 <div class="stat">🔻 Elliott Bear<br>$${money(data.elliottBear)}</div>
 </div>
 
-<h3>📈 7 Tage Chart</h3>
+<h3>📈 Chart (${labelDays(data.days || selectedDays)})</h3>
 <canvas id="chart"></canvas>
 
 <h3>🧠 AI Analyse</h3>
 <pre>${data.analysis}</pre>
 
-<p style="font-size:12px;color:#aaa;">
+<p class="small">
 Hinweis: Keine Anlageberatung. Die Werte sind technische Orientierungszonen und können falsch sein.
 </p>
 
 </div>
 `;
 
-drawChart(data.chart7d);
+drawChart(data.chartData || data.chart7d);
+loadHistory();
 }
 
 function drawChart(c) {
@@ -187,9 +489,7 @@ const labels = c.prices.map(p => new Date(p[0]).toLocaleDateString("de-DE"));
 
 const ctx = document.getElementById("chart").getContext("2d");
 
-if (chart) {
-chart.destroy();
-}
+if (chart) chart.destroy();
 
 chart = new Chart(ctx, {
 type: "line",
@@ -225,15 +525,98 @@ labels: { color: "white" }
 }
 },
 scales: {
-x: {
-ticks: { color: "white" }
-},
-y: {
-ticks: { color: "white" }
-}
+x: { ticks: { color: "white" } },
+y: { ticks: { color: "white" } }
 }
 }
 });
+}
+
+function addCurrentToWatchlist() {
+const value = selectedCoinId || document.getElementById("coin").value;
+
+if (!value) return;
+
+let list = JSON.parse(localStorage.getItem("watchlist") || "[]");
+
+if (!list.includes(value)) {
+list.push(value);
+}
+
+localStorage.setItem("watchlist", JSON.stringify(list));
+loadWatchlist();
+}
+
+async function loadWatchlist() {
+const box = document.getElementById("watchlist");
+if (!box) return;
+
+const list = JSON.parse(localStorage.getItem("watchlist") || "[]");
+
+if (!list.length) {
+box.innerHTML = '<p class="small">Noch keine Coins gespeichert.</p>';
+return;
+}
+
+box.innerHTML = "<p class='small'>Watchlist wird geladen...</p>";
+
+try {
+const res = await fetch("/api/watchlist?ids=" + encodeURIComponent(list.join(",")), {
+headers: {
+"x-app-password": getPassword()
+}
+});
+
+const data = await res.json();
+
+box.innerHTML = data.coins.map(function (coin) {
+const changeClass = coin.change24h >= 0 ? "positive" : "negative";
+const arrow = coin.change24h >= 0 ? "↗" : "↘";
+
+return (
+'<div class="watch-card">' +
+'<img src="' + coin.image + '" width="20"> <strong>' + coin.name + '</strong><br>' +
+'$' + money(coin.price) + '<br>' +
+'<span class="' + changeClass + '">' + arrow + ' ' + Number(coin.change24h).toFixed(2) + '%</span><br>' +
+'<button class="pill" onclick="quickAnalyze(\'' + coin.id + '\')">Analyse</button>' +
+'</div>'
+);
+}).join("");
+} catch (e) {
+box.innerHTML = list.map(function (coin) {
+return '<button class="pill" onclick="quickAnalyze(\'' + coin + '\')">' + coin + '</button>';
+}).join("");
+}
+}
+
+function saveHistory(data) {
+let history = JSON.parse(localStorage.getItem("history") || "[]");
+
+history.unshift({
+id: data.coinId,
+name: data.coin,
+time: new Date().toLocaleString("de-DE")
+});
+
+history = history.slice(0, 5);
+
+localStorage.setItem("history", JSON.stringify(history));
+}
+
+function loadHistory() {
+const box = document.getElementById("history");
+if (!box) return;
+
+const history = JSON.parse(localStorage.getItem("history") || "[]");
+
+if (!history.length) {
+box.innerHTML = '<p class="small">Noch keine Analyse durchgeführt.</p>';
+return;
+}
+
+box.innerHTML = history.map(function (item) {
+return '<button class="pill" onclick="quickAnalyze(\'' + item.id + '\')">' + item.name + ' - ' + item.time + '</button>';
+}).join("");
 }
 </script>
 
