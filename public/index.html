@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>CoinPilot AI</title>
-
+<meta charset="UTF-8">
+<title>CoinPilot AI PRO</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 body {
 background: #0f1117;
 color: white;
-font-family: Arial;
+font-family: Arial, sans-serif;
 padding: 20px;
+margin: 0;
 }
 
 h1 {
 color: #00ff99;
 font-size: 34px;
+margin-bottom: 10px;
+padding-right: 120px;
 }
 
 input, button {
@@ -35,6 +38,21 @@ button {
 background: #00ff99;
 cursor: pointer;
 font-weight: bold;
+}
+
+.logout-fixed {
+position: fixed;
+top: 16px;
+right: 16px;
+background: #ff4d4d;
+color: white;
+z-index: 200;
+box-shadow: 0 0 10px rgba(255,77,77,0.35);
+}
+
+.secondary-btn {
+background: #30364a;
+color: white;
 }
 
 .card {
@@ -57,12 +75,23 @@ border-radius: 10px;
 line-height: 1.5;
 }
 
+.clickable {
+cursor: pointer;
+}
+
+.clickable:hover {
+background: #2d3445;
+}
+
+.hint, .small {
+color: #aaa;
+font-size: 12px;
+}
+
 pre {
 color: #7dff7d;
 white-space: pre-wrap;
-word-wrap: break-word;
 overflow-wrap: break-word;
-max-width: 100%;
 line-height: 1.5;
 background: #111820;
 padding: 15px;
@@ -73,6 +102,7 @@ canvas {
 background: #111820;
 border-radius: 10px;
 padding: 10px;
+margin-top: 10px;
 }
 
 .login {
@@ -83,24 +113,38 @@ max-width: 420px;
 margin-top: 30px;
 }
 
-.small {
-font-size: 12px;
-color: #aaa;
-}
-
-.suggestion {
+.suggestion, .coin-card {
 background: #222733;
 padding: 10px;
-border-radius: 8px;
-margin-top: 5px;
+border-radius: 10px;
+margin: 6px;
 cursor: pointer;
-display: flex;
+display: inline-flex;
 align-items: center;
-gap: 10px;
+gap: 8px;
+min-width: 210px;
+vertical-align: top;
 }
 
-.suggestion:hover {
+.suggestion:hover, .coin-card:hover {
 background: #2d3445;
+}
+
+.coin-card img, .suggestion img {
+width: 24px;
+height: 24px;
+border-radius: 50%;
+}
+
+.star {
+margin-left: auto;
+cursor: pointer;
+font-size: 20px;
+color: #777;
+}
+
+.star.active {
+color: #00ff99;
 }
 
 .pill {
@@ -108,11 +152,25 @@ background: #30364a;
 color: white;
 border-radius: 20px;
 margin: 4px;
+width: auto;
+}
+
+.pill.active {
+background: #00ff99;
+color: #111;
 }
 
 .danger {
 color: #ff6b6b;
 font-weight: bold;
+}
+
+.positive {
+color: #00ff99;
+}
+
+.negative {
+color: #ff6b6b;
 }
 
 .loading {
@@ -124,21 +182,123 @@ padding: 15px;
 border-radius: 10px;
 }
 
-.watch-card {
+.signal {
+padding: 18px;
+border-radius: 14px;
+margin-top: 15px;
+font-size: 20px;
+font-weight: bold;
+background: #111820;
+border-left: 6px solid #ffaa00;
+}
+
+.signal-bull {
+border-left-color: #00ff99;
+}
+
+.signal-bear {
+border-left-color: #ff4d4d;
+}
+
+.bar-wrap {
+background: #30364a;
+border-radius: 20px;
+overflow: hidden;
+height: 18px;
+margin-top: 8px;
+}
+
+.bar {
+height: 18px;
+background: #00ff99;
+}
+
+.bar-red {
+background: #ff4d4d;
+}
+
+.tabs {
+display: flex;
+gap: 8px;
+overflow-x: auto;
+margin-top: 15px;
+padding-bottom: 8px;
+}
+
+.tab {
 background: #222733;
-padding: 10px;
+color: white;
+white-space: nowrap;
+width: auto;
+}
+
+.tab.active {
+background: #00ff99;
+color: #111;
+}
+
+.screen {
+display: none;
+}
+
+.screen.active {
+display: block;
+}
+
+.info-box {
+background: #111820;
+padding: 15px;
+border-radius: 12px;
+margin-top: 10px;
+}
+
+.lexicon-chat {
+background: #111820;
+padding: 12px;
 border-radius: 10px;
-margin: 5px;
-display: inline-block;
-min-width: 160px;
+margin-top: 10px;
 }
 
-.positive {
-color: #00ff99;
+.wave-current {
+border: 2px solid #00ff99;
+box-shadow: 0 0 10px rgba(0,255,153,0.4);
 }
 
-.negative {
+.modal {
+display: none;
+position: fixed;
+z-index: 99;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+background: rgba(0,0,0,0.75);
+overflow: auto;
+}
+
+.modal-content {
+background: #1a1d26;
+margin: 8% auto;
+padding: 20px;
+border-radius: 15px;
+width: 90%;
+max-width: 850px;
+}
+
+.close {
+float: right;
+font-size: 28px;
+cursor: pointer;
 color: #ff6b6b;
+}
+
+.mini-chart {
+height: 220px;
+max-height: 260px;
+}
+
+a {
+color: #00ff99;
 }
 
 @media (max-width: 600px) {
@@ -148,6 +308,13 @@ padding: 12px;
 
 h1 {
 font-size: 26px;
+padding-right: 95px;
+}
+
+.logout-fixed {
+top: 10px;
+right: 10px;
+padding: 9px;
 }
 
 input {
@@ -164,8 +331,13 @@ margin-top: 6px;
 grid-template-columns: 1fr;
 }
 
-.pill {
+.pill, .tab {
 width: auto;
+}
+
+.coin-card {
+width: 100%;
+box-sizing: border-box;
 }
 }
 </style>
@@ -173,32 +345,27 @@ width: auto;
 
 <body>
 
-<h1>🚀 CoinPilot AI PRO</h1>
+<h1>&#128640; CoinPilot AI PRO</h1>
 
 <div id="loginBox" class="login">
-<h3>🔐 Zugang</h3>
+<h3>&#128272; Zugang</h3>
 <p>Bitte Passwort eingeben:</p>
-<input id="passwordInput" type="password" placeholder="Passwort">
+<input id="passwordInput" type="password" placeholder="Passwort" onkeypress="if(event.key==='Enter'){login()}">
 <button onclick="login()">Einloggen</button>
 <p id="loginError" class="danger"></p>
 </div>
 
 <div id="app" style="display:none;">
+<button class="logout-fixed" onclick="logout()">Logout</button>
 
-<input id="coin" placeholder="Coin suchen, z.B. bitcoin, eth, kite">
+<div class="card">
+<input id="coin" placeholder="Coin suchen, z.B. bitcoin, eth, kite" onkeypress="if(event.key==='Enter'){analyze()}">
 <button onclick="analyze()">Analysieren</button>
-<button onclick="addCurrentToWatchlist()">⭐ Zur Watchlist</button>
+<button onclick="scrollToWatchlist()" class="secondary-btn">&#11088; Watchlist anzeigen</button>
 
 <div id="suggestions"></div>
 
-<h3>⏱️ Zeitraum</h3>
-<button class="pill" onclick="setDays('1')">1 Tag</button>
-<button class="pill" onclick="setDays('7')">7 Tage</button>
-<button class="pill" onclick="setDays('30')">30 Tage</button>
-<button class="pill" onclick="setDays('365')">1 Jahr</button>
-
-<h3>🔥 Top 10 Schnellstart</h3>
-<div>
+<h3>&#128293; Top 10 Schnellstart</h3>
 <button class="pill" onclick="quickAnalyze('bitcoin')">Bitcoin</button>
 <button class="pill" onclick="quickAnalyze('ethereum')">Ethereum</button>
 <button class="pill" onclick="quickAnalyze('solana')">Solana</button>
@@ -211,27 +378,80 @@ width: auto;
 <button class="pill" onclick="quickAnalyze('tron')">Tron</button>
 </div>
 
-<h3>⭐ Watchlist</h3>
-<div id="watchlist"></div>
-
-<h3>🕘 Letzte Analysen</h3>
-<div id="history"></div>
-
 <div id="status"></div>
 <div id="result"></div>
 
+<div class="card">
+<h3>&#127757; Markt&#252;bersicht</h3>
+<div id="marketOverview"></div>
+
+<h3>&#128293; Trending Coins</h3>
+<p class="small">Zeitraum: letzte 24 Stunden, sofern Daten verf&#252;gbar sind.</p>
+<div id="trending"></div>
+
+<h3>&#128640; Top Gewinner</h3>
+<p class="small">Zeitraum: letzte 24 Stunden.</p>
+<div id="topGainers"></div>
+
+<h3>&#128315; Top Verlierer</h3>
+<p class="small">Zeitraum: letzte 24 Stunden.</p>
+<div id="topLosers"></div>
+</div>
+
+<div class="card">
+<h3>&#129504; CoinPilot Lexikon</h3>
+<p class="small">Krypto- und Trading-Begriffe einfach erkl&#228;ren lassen.</p>
+<input id="lexiconTerm" placeholder="z.B. Blockchain, Smart Contract, Fibonacci">
+<button onclick="explainTerm('beginner')">Anf&#228;nger-Modus</button>
+<button onclick="explainTerm('pro')">Profi-Modus</button>
+<div id="lexiconResult"></div>
+</div>
+
+<div class="card" id="watchlistSection">
+<h3>&#11088; Watchlist</h3>
+<div id="watchlist"></div>
+
+<h3>&#128344; Letzte Analysen</h3>
+<div id="history"></div>
+</div>
+</div>
+
+<div id="infoModal" class="modal">
+<div class="modal-content">
+<span class="close" onclick="closeInfoModal()">&times;</span>
+<h2 id="infoTitle"></h2>
+<div id="infoBody"></div>
+</div>
+</div>
+
+<div id="exchangeModal" class="modal">
+<div class="modal-content">
+<span class="close" onclick="closeExchangeModal()">&times;</span>
+<h2>&#127974; B&#246;rsen-Geb&#252;hrenvergleich</h2>
+<p class="small">Orientierungswerte. Geb&#252;hren k&#246;nnen je nach VIP-Level, Volumen, Land, Produkt und Rabatt variieren.</p>
+<div id="exchangeFees"></div>
+</div>
 </div>
 
 <script>
 let chart;
+let miniChart;
 let selectedCoinId = "";
-let selectedCoinName = "";
+let selectedTimeframe = "7";
 let lastData = null;
-let selectedDays = "7";
+let currentScreen = 0;
+let touchStartX = 0;
+let lexiconHistory = [];
+let chartMode = "long";
 
 function getPassword() {
 return localStorage.getItem("coinpilot_password") || "";
 }
+document.getElementById("passwordInput").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    login();
+  }
+});
 
 function login() {
 const password = document.getElementById("passwordInput").value;
@@ -244,35 +464,116 @@ return;
 localStorage.setItem("coinpilot_password", password);
 document.getElementById("loginBox").style.display = "none";
 document.getElementById("app").style.display = "block";
-loadWatchlist();
-loadHistory();
+
+loadAllStartData();
+}
+
+function logout() {
+localStorage.removeItem("coinpilot_password");
+location.reload();
 }
 
 if (getPassword()) {
 document.getElementById("loginBox").style.display = "none";
 document.getElementById("app").style.display = "block";
+loadAllStartData();
+}
+
+function loadAllStartData() {
 loadWatchlist();
 loadHistory();
+loadTrending();
+loadTopGainers();
+loadTopLosers();
+loadMarketOverview();
 }
 
-function setDays(days) {
-selectedDays = days;
-setStatus("Zeitraum gesetzt: " + labelDays(days));
+document.getElementById("coin").addEventListener("keydown", function (event) {
+if (event.key === "Enter") {
+analyze();
+}
+});
+
+function scrollToWatchlist() {
+const section = document.getElementById("watchlistSection");
+if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-function labelDays(days) {
-if (days === "1") return "1 Tag";
-if (days === "7") return "7 Tage";
-if (days === "30") return "30 Tage";
-if (days === "365") return "1 Jahr";
-return days + " Tage";
+function scrollToResult() {
+const section = document.getElementById("result");
+if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function labelTimeframe(tf) {
+if (tf === "5m") return "5 Minuten";
+if (tf === "15m") return "15 Minuten";
+if (tf === "1h") return "1 Stunde";
+if (tf === "4h") return "4 Stunden";
+if (tf === "1") return "1 Tag";
+if (tf === "7") return "7 Tage";
+if (tf === "30") return "30 Tage";
+if (tf === "365") return "1 Jahr";
+return "7 Tage";
+}
+
+function setTimeframe(tf) {
+selectedTimeframe = tf;
+
+if (lastData) {
+analyze(true);
+} else {
+setStatus("Zeitraum gesetzt: " + labelTimeframe(tf) + ". Jetzt Coin analysieren.");
+}
+}
+
+function setChartMode(mode) {
+chartMode = mode;
+if (lastData) {
+drawChart(lastData.chartData, lastData);
+renderResult(lastData);
+}
+}
+
+function timeframeButton(tf, label) {
+const active = selectedTimeframe === tf ? " active" : "";
+return '<button class="pill' + active + '" onclick="setTimeframe(\'' + tf + '\')">' + label + '</button>';
+}
+
+function chartModeButton(mode, label) {
+const active = chartMode === mode ? " active" : "";
+return '<button class="pill' + active + '" onclick="setChartMode(\'' + mode + '\')">' + label + '</button>';
 }
 
 function money(value) {
-return Number(value).toLocaleString("de-DE", {
+const n = Number(value);
+
+if (!isFinite(n)) return value;
+
+if (Math.abs(n) >= 1) {
+return n.toLocaleString("de-DE", {
 minimumFractionDigits: 2,
 maximumFractionDigits: 2
 });
+}
+
+if (Math.abs(n) >= 0.01) {
+return n.toLocaleString("de-DE", {
+minimumFractionDigits: 4,
+maximumFractionDigits: 4
+});
+}
+
+if (Math.abs(n) >= 0.0001) {
+return n.toLocaleString("de-DE", {
+minimumFractionDigits: 6,
+maximumFractionDigits: 6
+});
+}
+
+return n.toLocaleString("de-DE", {
+minimumFractionDigits: 10,
+maximumFractionDigits: 10
+}) + " (" + n.toExponential(4) + ")";
 }
 
 function bigNumber(value) {
@@ -289,17 +590,51 @@ function clearStatus() {
 document.getElementById("status").innerHTML = "";
 }
 
+function getWatchlist() {
+return JSON.parse(localStorage.getItem("watchlist") || "[]");
+}
+
+function isInWatchlist(id) {
+return getWatchlist().includes(id);
+}
+
+function toggleWatchlist(id, event) {
+if (event) event.stopPropagation();
+
+let list = getWatchlist();
+
+if (list.includes(id)) {
+list = list.filter(function (item) {
+return item !== id;
+});
+} else {
+list.push(id);
+}
+
+localStorage.setItem("watchlist", JSON.stringify(list));
+
+loadWatchlist();
+loadTrending();
+loadTopGainers();
+loadTopLosers();
+
+if (lastData) {
+const star = document.getElementById("mainStar");
+if (star) {
+star.classList.toggle("active", isInWatchlist(lastData.coinId));
+}
+}
+}
+
 let searchTimer;
 
 document.getElementById("coin").addEventListener("input", function () {
 clearTimeout(searchTimer);
-
 searchTimer = setTimeout(searchCoins, 400);
 });
 
 async function searchCoins() {
 const query = document.getElementById("coin").value.trim();
-
 selectedCoinId = "";
 
 if (query.length < 2) {
@@ -309,38 +644,25 @@ return;
 
 try {
 const res = await fetch("/api/search?q=" + encodeURIComponent(query), {
-headers: {
-"x-app-password": getPassword()
-}
+headers: { "x-app-password": getPassword() }
 });
 
 const data = await res.json();
 
 if (!res.ok || data.error) {
 document.getElementById("suggestions").innerHTML =
-'<p class="danger">' + (data.error || "Suche nicht verfügbar") + "</p>";
+'<p class="danger">' + (data.error || "Suche nicht verf&#252;gbar") + "</p>";
 return;
 }
 
 document.getElementById("suggestions").innerHTML = data.coins.map(function (coin) {
 return (
-'<div class="suggestion" onclick="selectCoin(\'' +
-coin.id +
-"', '" +
-coin.name.replace(/'/g, "") +
-"')\">" +
-'<img src="' +
-coin.thumb +
-'" width="24">' +
-'<div><strong>' +
-coin.name +
-" (" +
-coin.symbol.toUpperCase() +
-")</strong><br><span class='small'>ID: " +
-coin.id +
-" | Rang: " +
-coin.marketCapRank +
-"</span></div></div>"
+'<div class="suggestion" onclick="selectCoin(\'' + coin.id + '\')">' +
+'<img src="' + coin.thumb + '" onerror="this.style.display=\'none\'">' +
+'<div><strong>' + coin.name + " (" + coin.symbol.toUpperCase() + ")</strong><br>" +
+"<span class='small'>ID: " + coin.id + " | Rang nach Market Cap: " + coin.marketCapRank + "</span></div>" +
+'<span class="star ' + (isInWatchlist(coin.id) ? "active" : "") + '" onclick="toggleWatchlist(\'' + coin.id + '\', event)">&#9733;</span>' +
+'</div>'
 );
 }).join("");
 } catch (e) {
@@ -349,9 +671,8 @@ document.getElementById("suggestions").innerHTML =
 }
 }
 
-function selectCoin(id, name) {
+function selectCoin(id) {
 selectedCoinId = id;
-selectedCoinName = name;
 document.getElementById("coin").value = id;
 document.getElementById("suggestions").innerHTML = "";
 }
@@ -359,25 +680,18 @@ document.getElementById("suggestions").innerHTML = "";
 function quickAnalyze(id) {
 document.getElementById("coin").value = id;
 selectedCoinId = id;
-analyze();
+analyze(true);
 }
 
-async function analyze() {
+async function analyze(shouldScroll) {
 const coinInput = selectedCoinId || document.getElementById("coin").value || "bitcoin";
 
-setStatus("1/4 🔍 Coin wird gesucht...");
+setStatus("1/4 &#128269; Coin wird gesucht...");
+if (shouldScroll) scrollToResult();
 
-setTimeout(function () {
-setStatus("2/4 📊 Marktdaten werden geladen...");
-}, 500);
-
-setTimeout(function () {
-setStatus("3/4 📈 Chart wird erstellt...");
-}, 1200);
-
-setTimeout(function () {
-setStatus("4/4 🤖 AI Analyse läuft...");
-}, 2000);
+setTimeout(function () { setStatus("2/4 &#128202; Marktdaten werden geladen..."); }, 500);
+setTimeout(function () { setStatus("3/4 &#128200; Chart und Trading-Zonen werden berechnet..."); }, 1200);
+setTimeout(function () { setStatus("4/4 &#129302; AI Analyse l&#228;uft..."); }, 2000);
 
 const res = await fetch("/api/analyze", {
 method: "POST",
@@ -387,7 +701,7 @@ headers: {
 },
 body: JSON.stringify({
 coin: coinInput,
-days: selectedDays
+timeframe: selectedTimeframe
 })
 });
 
@@ -398,96 +712,623 @@ clearStatus();
 document.getElementById("result").innerHTML =
 '<div class="card"><p class="danger">' +
 data.error +
-'</p><p class="small">Tipp: CoinGecko öffnen und den letzten Teil der URL als Coin-ID verwenden. Beispiel: coingecko.com/de/munze/kite-ai → kite-ai</p></div>';
+'</p><p class="small">Tipp: CoinGecko &#246;ffnen und den letzten Teil der URL als Coin-ID verwenden. Beispiel: coingecko.com/de/munze/kite-ai &#8594; kite-ai</p></div>';
 return;
 }
 
 lastData = data;
 saveHistory(data);
-
 clearStatus();
+renderResult(data);
+loadHistory();
+
+if (shouldScroll) {
+setTimeout(scrollToResult, 150);
+}
+}
+
+function getLongShortLevels(data) {
+const entry = Number(data.entryZone);
+
+const longSL = Math.min(Number(data.stopLoss), entry * 0.99);
+const longTP1 = Math.max(Number(data.upsideTarget1), entry * 1.01);
+const longTP2 = Math.max(Number(data.upsideTarget2), entry * 1.02);
+const longTP3 = Math.max(Number(data.upsideTarget3), entry * 1.03);
+
+const shortSL = Math.max(Number(data.resistance), entry * 1.01);
+const shortTP1 = Math.min(Number(data.downsideTarget1), entry * 0.99);
+const shortTP2 = Math.min(Number(data.downsideTarget2), entry * 0.98);
+const shortTP3 = Math.min(Number(data.downsideTarget3), entry * 0.97);
+
+return {
+entry: entry,
+longSL: longSL,
+longTP1: longTP1,
+longTP2: longTP2,
+longTP3: longTP3,
+shortSL: shortSL,
+shortTP1: shortTP1,
+shortTP2: shortTP2,
+shortTP3: shortTP3
+};
+}
+
+function renderResult(data) {
+const signalClass = data.marketScore.score >= 65 ? "signal-bull" : data.marketScore.score <= 35 ? "signal-bear" : "";
+const backtest = calculateBacktest(data.chartData, data);
+const levels = getLongShortLevels(data);
 
 document.getElementById("result").innerHTML = `
-<div class="card">
+<div class="card" id="swipeArea">
 
-<h2><img src="${data.image}" width="24"> ${data.coin} (${data.symbol.toUpperCase()})</h2>
-<p class="small">CoinGecko-ID: ${data.coinId} | Zeitraum: ${labelDays(data.days)}</p>
+<h2>
+<img src="${data.image}" width="24" onerror="this.style.display='none'">
+${data.coin} (${data.symbol.toUpperCase()})
+<span id="mainStar" class="star ${isInWatchlist(data.coinId) ? "active" : ""}" onclick="toggleWatchlist('${data.coinId}', event)">&#9733;</span>
+</h2>
 
-<div class="grid">
-<div class="stat">💰 Preis<br>$${money(data.price)}</div>
-<div class="stat">📊 Market Cap<br>$${bigNumber(data.marketCap)}</div>
-<div class="stat">📈 24h<br>${Number(data.change24h).toFixed(2)}%</div>
-<div class="stat">♻️ Supply<br>${bigNumber(data.circulating)}</div>
-<div class="stat">🏁 Max Supply<br>${bigNumber(data.maxSupply)}</div>
-<div class="stat">😨 Fear & Greed<br>${data.fearGreed}</div>
-<div class="stat">⚡ Momentum<br>${data.momentum}</div>
-<div class="stat">📉 RSI<br>${data.rsi}</div>
-<div class="stat">🧠 Score<br>${data.marketScore.score}/100<br>${data.marketScore.label}</div>
+<p class="small">CoinGecko-ID: ${data.coinId} | Aktiver Zeitraum: <strong>${data.timeframeLabel}</strong></p>
+
+<div class="tabs">
+<button class="tab active" onclick="showScreen(0)">Chart</button>
+<button class="tab" onclick="showScreen(1)">Signal</button>
+<button class="tab" onclick="showScreen(2)">Markt</button>
+<button class="tab" onclick="showScreen(3)">Levels</button>
+<button class="tab" onclick="showScreen(4)">Profit</button>
+<button class="tab" onclick="showScreen(5)">Technik</button>
+<button class="tab" onclick="showScreen(6)">AI</button>
 </div>
 
-<br>
+<div class="screen active">
+<h3>&#128200; Chart (${data.timeframeLabel})</h3>
 
-<div class="grid">
-<div class="stat">🟢 Support<br>$${money(data.support)}</div>
-<div class="stat">🔴 Resistance<br>$${money(data.resistance)}</div>
-<div class="stat">🎯 Buy Zone<br>$${money(data.buyZone)}</div>
-<div class="stat">🚀 Breakout<br>$${money(data.breakoutTarget)}</div>
+${timeframeButton("5m", "5m")}
+${timeframeButton("15m", "15m")}
+${timeframeButton("1h", "1h")}
+${timeframeButton("4h", "4h")}
+${timeframeButton("1", "1D")}
+${timeframeButton("7", "7D")}
+${timeframeButton("30", "30D")}
+${timeframeButton("365", "1Y")}
+
+<h3>Chart-Anzeige</h3>
+${chartModeButton("long", "&#128994; Nur Long")}
+${chartModeButton("short", "&#128308; Nur Short")}
+${chartModeButton("both", "&#9898; Beide")}
+
+<div class="info-box" style="margin-bottom:10px;">
+  <strong>📊 Chart:</strong> 🟢 Preis | 🔵 Entry | 🔴 SL | 🟡 TP1 | 🟠 TP2 | 🟣 TP3
 </div>
 
-<br>
-
-<div class="grid">
-<div class="stat">🎯 Ziel oben 1<br>$${money(data.upsideTarget1)}</div>
-<div class="stat">🎯 Ziel oben 2<br>$${money(data.upsideTarget2)}</div>
-<div class="stat">🎯 Ziel oben 3<br>$${money(data.upsideTarget3)}</div>
-<div class="stat">🛡️ Ziel unten 1<br>$${money(data.downsideTarget1)}</div>
-<div class="stat">🛡️ Ziel unten 2<br>$${money(data.downsideTarget2)}</div>
-<div class="stat">🛡️ Ziel unten 3<br>$${money(data.downsideTarget3)}</div>
-</div>
-
-<br>
-
-<div class="grid">
-<div class="stat">🔵 Fib 0.382<br>$${money(data.fib382)}</div>
-<div class="stat">🟠 Fib 0.5<br>$${money(data.fib50)}</div>
-<div class="stat">🟣 Fib 0.618<br>$${money(data.fib618)}</div>
-<div class="stat">🚀 Fib 1.272<br>$${money(data.fib1272)}</div>
-<div class="stat">🚀 Fib 1.618<br>$${money(data.fib1618)}</div>
-<div class="stat">🚀 Fib 2.618<br>$${money(data.fib2618)}</div>
-</div>
-
-<br>
-
-<div class="grid">
-<div class="stat">📘 EMA20<br>$${money(data.ema20)}</div>
-<div class="stat">📙 EMA50<br>$${money(data.ema50)}</div>
-<div class="stat">📕 EMA200<br>$${money(data.ema200)}</div>
-<div class="stat">🌊 Elliott Bull<br>$${money(data.elliottBull)}</div>
-<div class="stat">🔻 Elliott Bear<br>$${money(data.elliottBear)}</div>
-</div>
-
-<h3>📈 Chart (${labelDays(data.days || selectedDays)})</h3>
 <canvas id="chart"></canvas>
 
-<h3>🧠 AI Analyse</h3>
-<pre>${data.analysis}</pre>
+<p class="small">Aktuelle Anzeige: <strong>${chartMode === "long" ? "Long" : chartMode === "short" ? "Short" : "Long + Short"}</strong></p>
 
 <p class="small">
-Hinweis: Keine Anlageberatung. Die Werte sind technische Orientierungszonen und können falsch sein.
+<a href="https://www.tradingview.com/chart/?symbol=${data.tradingViewSymbol}" target="_blank">
+&#128073; TradingView Kerzenchart &#246;ffnen
+</a>
+|
+<a href="https://www.coingecko.com/en/coins/${data.coinId}" target="_blank">
+&#128073; CoinGecko &#246;ffnen
+</a>
 </p>
+
+<h3>&#128202; Long / Short Szenario</h3>
+<div class="grid">
+<div class="stat positive">
+&#128994; M&#246;gliches Long-Szenario<br>
+Entry: $${money(levels.entry)}<br>
+Stop Loss: $${money(levels.longSL)}<br>
+M&#246;gliche Ziele: $${money(levels.longTP1)}, $${money(levels.longTP2)}, $${money(levels.longTP3)}
+</div>
+<div class="stat negative">
+&#128308; M&#246;gliches Short-/Risiko-Szenario<br>
+Entry: $${money(levels.entry)}<br>
+Stop Loss: $${money(levels.shortSL)}<br>
+M&#246;gliche Ziele: $${money(levels.shortTP1)}, $${money(levels.shortTP2)}, $${money(levels.shortTP3)}
+</div>
+</div>
+
+<h3>&#128202; Backtesting</h3>
+<div class="grid">
+<div class="stat">&#9989; Positive Setups<br><span class="positive">${backtest.winRate}%</span><div class="bar-wrap"><div class="bar" style="width:${backtest.winRate}%"></div></div></div>
+<div class="stat">&#10060; Negative Setups<br><span class="negative">${backtest.lossRate}%</span><div class="bar-wrap"><div class="bar bar-red" style="width:${backtest.lossRate}%"></div></div></div>
+<div class="stat">&#128204; Gepr&#252;fte Punkte<br>${backtest.total}</div>
+<div class="stat">&#127919; TP zuerst<br>${backtest.wins}</div>
+<div class="stat">&#128721; SL zuerst<br>${backtest.losses}</div>
+</div>
+<p class="small">Vereinfachtes Backtesting: Pr&#252;ft r&#252;ckwirkend, ob TP1 oder Stop Loss zuerst erreicht worden w&#228;re. Keine Garantie f&#252;r zuk&#252;nftige Ergebnisse.</p>
+</div>
+
+<div class="screen">
+<div class="signal ${signalClass}">
+${data.marketScore.signalEmoji} Smart Signal: ${data.marketScore.signal}
+<br>
+Score: ${data.marketScore.score}/100 &#8211; ${data.marketScore.label}
+</div>
+
+<div class="grid">
+<div class="stat">&#9888;&#65039; Risiko<br>${data.riskLevel.emoji} ${data.riskLevel.label}<div class="hint">Nach Market Cap eingestuft.</div></div>
+<div class="stat">&#9889; Momentum<br>${data.momentum}</div>
+<div class="stat">&#128552; Fear & Greed<br>${data.fearGreed}<div class="bar-wrap"><div class="bar" style="width:${data.fearGreedValue}%"></div></div></div>
+<div class="stat">&#129504; Warum dieses Signal?<br>${buildWhySignal(data)}</div>
+<div class="stat">&#128100; Geeignet f&#252;r<br>${buildForWho(data)}</div>
+<div class="stat">&#10060; Fehler vermeiden<br>&#8226; Kein Stop Loss<br>&#8226; Zu hoher Hebel<br>&#8226; FOMO nach starken Bewegungen</div>
+</div>
+
+<div class="info-box">
+<h3>&#128204; Hinweis</h3>
+<p>Das Signal ist eine technische Orientierung und keine Kauf- oder Verkaufsempfehlung.</p>
+</div>
+</div>
+
+<div class="screen">
+<div class="grid">
+<div class="stat">&#128176; Preis<br>$${money(data.price)}</div>
+<div class="stat">&#128202; Market Cap<br>$${bigNumber(data.marketCap)}<div class="hint">Market Cap = Preis &#215; umlaufende Coins.</div></div>
+<div class="stat">&#128181; Volumen 24h<br>$${bigNumber(data.volume24h)}</div>
+<div class="stat">&#128200; 24h<br>${Number(data.change24h).toFixed(2)}%</div>
+<div class="stat">&#9851;&#65039; Supply<br>${bigNumber(data.circulating)}</div>
+<div class="stat">&#127937; Max Supply<br>${bigNumber(data.maxSupply)}</div>
+<div class="stat">&#128202; Marktphase<br>${buildMarketPhase(data)}</div>
+<div class="stat">&#128204; Setup-Typ<br>${buildSetupType(data)}</div>
+</div>
+</div>
+
+<div class="screen">
+<h3>&#127919; Trading-Zonen</h3>
+
+<h3 class="positive">&#128994; Long Setup</h3>
+<div class="grid">
+<div class="stat">Entry<br>$${money(levels.entry)}<div class="hint">M&#246;glicher Einstiegspunkt.</div></div>
+<div class="stat negative">Stop Loss<br>$${money(levels.longSL)}<div class="hint">Bei Long unterhalb vom Entry.</div></div>
+<div class="stat positive">Target 1<br>$${money(levels.longTP1)}</div>
+<div class="stat positive">Target 2<br>$${money(levels.longTP2)}</div>
+<div class="stat positive">Target 3<br>$${money(levels.longTP3)}</div>
+</div>
+
+<h3 class="negative">&#128308; Short / b&#228;risches Risiko-Setup</h3>
+<div class="grid">
+<div class="stat">Entry<br>$${money(levels.entry)}</div>
+<div class="stat negative">Stop Loss<br>$${money(levels.shortSL)}<div class="hint">Bei Short oberhalb vom Entry.</div></div>
+<div class="stat positive">Target 1<br>$${money(levels.shortTP1)}</div>
+<div class="stat positive">Target 2<br>$${money(levels.shortTP2)}</div>
+<div class="stat positive">Target 3<br>$${money(levels.shortTP3)}</div>
+</div>
+</div>
+
+<div class="screen">
+<h3>&#128176; Profit-Simulation</h3>
+<input id="investmentInside" placeholder="Betrag in &#8364;, z.B. 1000" value="1000" oninput="renderProfitSimulation()">
+<div id="profitBox"></div>
+<p class="small">Hebel erh&#246;ht Gewinn und Verlust stark. Simulation ohne Geb&#252;hren, Slippage und Liquidationsrisiko. Keine Anlageberatung.</p>
+</div>
+
+<div class="screen">
+<h3>&#128208; Technische Analyse (${data.timeframeLabel})</h3>
+<p class="small">Technische Werte k&#246;nnen sich je nach Timeframe ver&#228;ndern.</p>
+
+${timeframeButton("5m", "5m")}
+${timeframeButton("15m", "15m")}
+${timeframeButton("1h", "1h")}
+${timeframeButton("4h", "4h")}
+${timeframeButton("1", "1D")}
+${timeframeButton("7", "7D")}
+${timeframeButton("30", "30D")}
+${timeframeButton("365", "1Y")}
+
+<h3>&#128208; Fibonacci Retracement</h3>
+<div class="grid">
+<div class="stat">Fibonacci 0.382<br>$${money(data.fib382)}</div>
+<div class="stat">Fibonacci 0.5<br>$${money(data.fib50)}</div>
+<div class="stat">Fibonacci 0.618<br>$${money(data.fib618)}</div>
+</div>
+
+<h3>&#128640; Fibonacci Extension</h3>
+<div class="grid">
+<div class="stat">Extension 1.272<br>$${money(data.fib1272)}</div>
+<div class="stat">Extension 1.618<br>$${money(data.fib1618)}</div>
+<div class="stat">Extension 2.618<br>$${money(data.fib2618)}</div>
+</div>
+
+<h3>&#128202; EMA Trend</h3>
+<div class="grid">
+<div class="stat">EMA20<br>$${money(data.ema20)}<div class="hint">Kurzfristiger Trend.</div></div>
+<div class="stat">EMA50<br>$${money(data.ema50)}<div class="hint">Mittelfristiger Trend.</div></div>
+<div class="stat">EMA200<br>$${money(data.ema200)}<div class="hint">Langfristiger Trend.</div></div>
+</div>
+
+<h3>&#127754; Elliott Waves</h3>
+<div class="grid">
+${buildElliottWaves(data)}
+</div>
+</div>
+
+<div class="screen">
+<h3>&#129504; AI Analyse</h3>
+<pre>${data.analysis}</pre>
+${data.aiErrorMessage ? '<p class="danger">AI Hinweis: ' + data.aiErrorMessage + '</p>' : ''}
+<p class="small">Hinweis: Keine Anlageberatung. Die Werte sind technische Orientierungszonen und k&#246;nnen falsch sein.</p>
+</div>
 
 </div>
 `;
 
-drawChart(data.chartData || data.chart7d);
-loadHistory();
+currentScreen = 0;
+setupSwipe();
+drawChart(data.chartData, data);
+renderProfitSimulation();
 }
 
-function drawChart(c) {
+function buildWhySignal(data) {
+const parts = [];
+
+if (Number(data.rsi) > 70) parts.push("RSI hoch &#8594; &#220;berhitzung m&#246;glich");
+if (Number(data.rsi) < 30) parts.push("RSI niedrig &#8594; Erholung m&#246;glich");
+if (Number(data.price) > Number(data.ema50)) parts.push("Preis &#252;ber EMA50 &#8594; Trend k&#246;nnte stabil sein");
+if (Number(data.change24h) > 3) parts.push("24h Momentum positiv");
+if (Number(data.change24h) < -3) parts.push("24h Momentum schwach");
+
+return parts.length ? parts.join("<br>") : "Gemischte Signale &#8594; Beobachten k&#246;nnte sinnvoll sein";
+}
+
+function buildForWho(data) {
+if (data.marketScore.score >= 70) {
+return "&#128993; Eher Fortgeschrittene / Trader<br><span class='small'>Anf&#228;nger sollten Risiko klein halten.</span>";
+}
+
+if (data.marketScore.score <= 35) {
+return "&#128308; Eher erfahrene Trader<br><span class='small'>Erh&#246;hte Vorsicht.</span>";
+}
+
+return "&#128994; Zum Beobachten geeignet<br><span class='small'>Kein klares Signal.</span>";
+}
+
+function buildMarketPhase(data) {
+if (Number(data.price) > Number(data.ema200) && data.marketScore.score >= 60) {
+return "&#128002; k&#246;nnte bullisch sein";
+}
+
+if (Number(data.price) < Number(data.ema200) && data.marketScore.score <= 45) {
+return "&#128059; k&#246;nnte b&#228;risch sein";
+}
+
+return "&#9878;&#65039; eher neutral / seitw&#228;rts";
+}
+
+function buildSetupType(data) {
+if (Number(data.change24h) > 5) return "&#128640; m&#246;gliches Momentum/Breakout-Setup";
+if (Number(data.rsi) < 35) return "&#128260; m&#246;gliche Reversal-Zone";
+if (Number(data.price) > Number(data.ema50)) return "&#128200; m&#246;gliches Trend-Follow-Setup";
+return "&#9203; Pullback/Abwarten m&#246;glich";
+}
+
+function buildElliottWaves(data) {
+const price = Number(data.price);
+
+let active = "Welle 2";
+if (Number(data.change24h) > 3) active = "Welle 3";
+if (Number(data.change24h) < -3) active = "Korrektur A";
+
+const waves = [
+{ name: "Welle 1", value: price * 1.08, type: "bull" },
+{ name: "Welle 2", value: price * 0.96, type: "correction" },
+{ name: "Welle 3", value: price * 1.25, type: "bull" },
+{ name: "Welle 4", value: price * 1.10, type: "correction" },
+{ name: "Welle 5", value: price * 1.40, type: "bull" },
+{ name: "Korrektur A", value: price * 0.90, type: "bear" },
+{ name: "Korrektur B", value: price * 0.98, type: "correction" },
+{ name: "Korrektur C", value: price * 0.82, type: "bear" }
+];
+
+return waves.map(function (wave) {
+const colorClass =
+wave.type === "bull" ? "positive" :
+wave.type === "bear" ? "negative" :
+"";
+
+const currentClass = wave.name === active ? " wave-current" : "";
+
+return `
+<div class="stat ${colorClass}${currentClass}">
+${wave.name} ${wave.name === active ? "&#11088; m&#246;glich aktuell" : ""}<br>
+$${money(wave.value)}
+<div class="hint">
+${wave.type === "bull" ? "Bullische Impulswelle" : wave.type === "bear" ? "B&#228;rische Korrekturwelle" : "Korrektur / Zwischenwelle"}
+</div>
+</div>
+`;
+}).join("");
+}
+
+function renderProfitSimulation() {
+if (!lastData) return;
+
+const box = document.getElementById("profitBox");
+const input = document.getElementById("investmentInside");
+if (!box || !input) return;
+
+const investment = Number(input.value || 1000);
+const d = lastData;
+const levs = [1, 3, 5, 10, 20, 50, 70, 100];
+const levels = getLongShortLevels(d);
+
+function calcLong(target, lev) {
+const pct = (target / levels.entry - 1) * lev;
+return investment * (1 + pct);
+}
+
+function calcShort(target, lev) {
+const pct = (levels.entry / target - 1) * lev;
+return investment * (1 + pct);
+}
+
+function calcShortSL(sl, lev) {
+const pct = (levels.entry / sl - 1) * lev;
+return investment * (1 + pct);
+}
+
+box.innerHTML = `
+<h3>&#128994; Long-Simulation</h3>
+<p class="small">Long bedeutet: Entry &#8594; Stop Loss darunter &#8594; Targets dar&#252;ber.</p>
+
+${levs.map(function (lev) {
+return `
+<div class="card">
+<h3>${lev}x Hebel Long</h3>
+<div class="grid">
+<div class="stat">Entry<br>$${money(levels.entry)}<br>Start: ${money(investment)} &#8364;</div>
+<div class="stat negative">Stop Loss<br>$${money(levels.longSL)}<br>${money(calcLong(levels.longSL, lev))} &#8364;</div>
+<div class="stat positive">Target 1<br>$${money(levels.longTP1)}<br>${money(calcLong(levels.longTP1, lev))} &#8364;</div>
+<div class="stat positive">Target 2<br>$${money(levels.longTP2)}<br>${money(calcLong(levels.longTP2, lev))} &#8364;</div>
+<div class="stat positive">Target 3<br>$${money(levels.longTP3)}<br>${money(calcLong(levels.longTP3, lev))} &#8364;</div>
+</div>
+</div>
+`;
+}).join("")}
+
+<h3>&#128308; Short-Simulation</h3>
+<p class="small">Short bedeutet: Entry &#8594; Stop Loss dar&#252;ber &#8594; Targets darunter.</p>
+
+${levs.map(function (lev) {
+return `
+<div class="card">
+<h3>${lev}x Hebel Short</h3>
+<div class="grid">
+<div class="stat">Entry<br>$${money(levels.entry)}<br>Start: ${money(investment)} &#8364;</div>
+<div class="stat negative">Stop Loss<br>$${money(levels.shortSL)}<br>${money(calcShortSL(levels.shortSL, lev))} &#8364;</div>
+<div class="stat positive">Target 1<br>$${money(levels.shortTP1)}<br>${money(calcShort(levels.shortTP1, lev))} &#8364;</div>
+<div class="stat positive">Target 2<br>$${money(levels.shortTP2)}<br>${money(calcShort(levels.shortTP2, lev))} &#8364;</div>
+<div class="stat positive">Target 3<br>$${money(levels.shortTP3)}<br>${money(calcShort(levels.shortTP3, lev))} &#8364;</div>
+</div>
+</div>
+`;
+}).join("")}
+
+<p class="small">Simulation ohne Geb&#252;hren, Slippage und Liquidationsrisiko. Keine Anlageberatung.</p>
+`;
+}
+
+function calculateBacktest(chartData, data) {
+const levels = getLongShortLevels(data);
+const prices = chartData.prices.map(p => p[1]);
+const entry = Number(levels.entry);
+const tp1 = Number(levels.longTP1);
+const sl = Number(levels.longSL);
+
+let wins = 0;
+let losses = 0;
+let total = 0;
+
+for (let i = 0; i < prices.length - 3; i++) {
+const price = prices[i];
+
+if (price <= entry * 1.01 && price >= entry * 0.99) {
+total++;
+
+let result = "open";
+
+for (let j = i + 1; j < prices.length; j++) {
+if (prices[j] >= tp1) {
+result = "win";
+break;
+}
+
+if (prices[j] <= sl) {
+result = "loss";
+break;
+}
+}
+
+if (result === "win") wins++;
+if (result === "loss") losses++;
+}
+}
+
+if (total === 0) {
+return { total: 0, wins: 0, losses: 0, winRate: 0, lossRate: 0 };
+}
+
+return {
+total: total,
+wins: wins,
+losses: losses,
+winRate: Math.round((wins / total) * 100),
+lossRate: Math.round((losses / total) * 100)
+};
+}
+
+function showScreen(index) {
+currentScreen = index;
+
+const screens = document.querySelectorAll(".screen");
+const tabs = document.querySelectorAll(".tab");
+
+screens.forEach(function (screen, i) {
+screen.classList.toggle("active", i === index);
+});
+
+tabs.forEach(function (tab, i) {
+tab.classList.toggle("active", i === index);
+});
+
+if (index === 0 && lastData) {
+setTimeout(function () {
+drawChart(lastData.chartData, lastData);
+}, 100);
+}
+
+if (index === 4) {
+renderProfitSimulation();
+}
+}
+
+function setupSwipe() {
+const area = document.getElementById("swipeArea");
+if (!area) return;
+
+area.addEventListener("touchstart", function (e) {
+touchStartX = e.changedTouches[0].screenX;
+});
+
+area.addEventListener("touchend", function (e) {
+const touchEndX = e.changedTouches[0].screenX;
+const diff = touchStartX - touchEndX;
+
+if (Math.abs(diff) < 50) return;
+
+if (diff > 0 && currentScreen < 6) showScreen(currentScreen + 1);
+if (diff < 0 && currentScreen > 0) showScreen(currentScreen - 1);
+});
+}
+
+const levelPlugin = {
+  id: "levelPlugin",
+  afterDraw: function (chart) {
+    if (!lastData) return;
+
+    const levelsData = getLongShortLevels(lastData);
+
+    const ctx = chart.ctx;
+    const yScale = chart.scales.y;
+    const xStart = chart.chartArea.left;
+    const xEnd = chart.chartArea.right;
+
+    let levels = [];
+
+    if (chartMode === "long") {
+      levels = [
+        { label: "Long Entry", value: Number(levelsData.entry), color: "#00e5ff" },
+        { label: "Long SL", value: Number(levelsData.longSL), color: "#ff4d4d" },
+        { label: "Long TP1", value: Number(levelsData.longTP1), color: "#ffd700" },
+        { label: "Long TP2", value: Number(levelsData.longTP2), color: "#ffa500" },
+        { label: "Long TP3", value: Number(levelsData.longTP3), color: "#c77dff" }
+      ];
+    }
+
+    if (chartMode === "short") {
+      levels = [
+        { label: "Short Entry", value: Number(levelsData.entry), color: "#00e5ff" },
+        { label: "Short SL", value: Number(levelsData.shortSL), color: "#ff4d4d" },
+        { label: "Short TP1", value: Number(levelsData.shortTP1), color: "#ffd700" },
+        { label: "Short TP2", value: Number(levelsData.shortTP2), color: "#ffa500" },
+        { label: "Short TP3", value: Number(levelsData.shortTP3), color: "#c77dff" }
+      ];
+    }
+
+    if (chartMode === "both") {
+      levels = [
+        { label: "Long Entry", value: Number(levelsData.entry), color: "#00e5ff" },
+        { label: "Long SL", value: Number(levelsData.longSL), color: "#ff4d4d" },
+        { label: "Long TP1", value: Number(levelsData.longTP1), color: "#ffd700" },
+        { label: "Long TP2", value: Number(levelsData.longTP2), color: "#ffa500" },
+        { label: "Long TP3", value: Number(levelsData.longTP3), color: "#c77dff" },
+
+        { label: "Short Entry", value: Number(levelsData.entry), color: "#00e5ff" },
+        { label: "Short SL", value: Number(levelsData.shortSL), color: "#ff4d4d" },
+        { label: "Short TP1", value: Number(levelsData.shortTP1), color: "#ffd700" },
+        { label: "Short TP2", value: Number(levelsData.shortTP2), color: "#ffa500" },
+        { label: "Short TP3", value: Number(levelsData.shortTP3), color: "#c77dff" }
+      ];
+    }
+
+    levels.forEach(function (level) {
+      const y = yScale.getPixelForValue(level.value);
+
+      if (y < chart.chartArea.top || y > chart.chartArea.bottom) return;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(xStart, y);
+      ctx.lineTo(xEnd, y);
+      ctx.strokeStyle = level.color;
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([6, 6]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = level.color;
+      ctx.font = "12px Arial";
+      ctx.fillText(level.label + " $" + money(level.value), xStart + 8, y - 5);
+      ctx.restore();
+    });
+  }
+};
+
+Chart.register(levelPlugin);
+
+function drawChart(c, data) {
+lastData = data;
+
 const prices = c.prices.map(p => p[1]);
 const labels = c.prices.map(p => new Date(p[0]).toLocaleDateString("de-DE"));
+const levels = getLongShortLevels(data);
 
-const ctx = document.getElementById("chart").getContext("2d");
+let visibleLevels = [];
+
+if (chartMode === "long" || chartMode === "both") {
+  visibleLevels = visibleLevels.concat([
+    levels.entry,
+    levels.longSL,
+    levels.longTP1,
+    levels.longTP2,
+    levels.longTP3
+  ]);
+}
+
+if (chartMode === "short" || chartMode === "both") {
+  visibleLevels = visibleLevels.concat([
+    levels.entry,
+    levels.shortSL,
+    levels.shortTP1,
+    levels.shortTP2,
+    levels.shortTP3
+  ]);
+}
+
+if (chartMode === "both") {
+  visibleLevels = [
+    levels.entry,
+
+    levels.longSL,
+    levels.longTP1,
+    levels.longTP2,
+    levels.longTP3,
+
+    levels.shortSL,
+    levels.shortTP1,
+    levels.shortTP2,
+    levels.shortTP3
+  ];
+}
+
+const allValues = prices.concat(visibleLevels);
+const minValue = Math.min.apply(null, allValues);
+const maxValue = Math.max.apply(null, allValues);
+const padding = (maxValue - minValue) * 0.15 || maxValue * 0.05;
+
+const ctx = document.getElementById("chart");
+if (!ctx) return;
 
 if (chart) chart.destroy();
 
@@ -507,10 +1348,7 @@ fill: true
 }]
 },
 options: {
-interaction: {
-mode: "index",
-intersect: false
-},
+interaction: { mode: "index", intersect: false },
 plugins: {
 tooltip: {
 enabled: true,
@@ -520,13 +1358,20 @@ return "Preis: $" + money(context.raw);
 }
 }
 },
-legend: {
-labels: { color: "white" }
-}
+legend: { display: false }
 },
 scales: {
 x: { ticks: { color: "white" } },
-y: { ticks: { color: "white" } }
+y: {
+min: minValue - padding,
+max: maxValue + padding,
+ticks: {
+color: "white",
+callback: function(value) {
+return "$" + money(value);
+}
+}
+}
 }
 }
 });
@@ -534,14 +1379,11 @@ y: { ticks: { color: "white" } }
 
 function addCurrentToWatchlist() {
 const value = selectedCoinId || document.getElementById("coin").value;
-
 if (!value) return;
 
-let list = JSON.parse(localStorage.getItem("watchlist") || "[]");
+let list = getWatchlist();
 
-if (!list.includes(value)) {
-list.push(value);
-}
+if (!list.includes(value)) list.push(value);
 
 localStorage.setItem("watchlist", JSON.stringify(list));
 loadWatchlist();
@@ -551,7 +1393,7 @@ async function loadWatchlist() {
 const box = document.getElementById("watchlist");
 if (!box) return;
 
-const list = JSON.parse(localStorage.getItem("watchlist") || "[]");
+const list = getWatchlist();
 
 if (!list.length) {
 box.innerHTML = '<p class="small">Noch keine Coins gespeichert.</p>';
@@ -562,23 +1404,22 @@ box.innerHTML = "<p class='small'>Watchlist wird geladen...</p>";
 
 try {
 const res = await fetch("/api/watchlist?ids=" + encodeURIComponent(list.join(",")), {
-headers: {
-"x-app-password": getPassword()
-}
+headers: { "x-app-password": getPassword() }
 });
 
 const data = await res.json();
 
 box.innerHTML = data.coins.map(function (coin) {
 const changeClass = coin.change24h >= 0 ? "positive" : "negative";
-const arrow = coin.change24h >= 0 ? "↗" : "↘";
+const arrow = coin.change24h >= 0 ? "&#8599;" : "&#8600;";
 
 return (
-'<div class="watch-card">' +
-'<img src="' + coin.image + '" width="20"> <strong>' + coin.name + '</strong><br>' +
-'$' + money(coin.price) + '<br>' +
+'<div class="coin-card" onclick="quickAnalyze(\'' + coin.id + '\')">' +
+'<img src="' + coin.image + '" onerror="this.style.display=\'none\'">' +
+'<div><strong>' + coin.name + '</strong><br>$' + money(coin.price) + '<br>' +
 '<span class="' + changeClass + '">' + arrow + ' ' + Number(coin.change24h).toFixed(2) + '%</span><br>' +
-'<button class="pill" onclick="quickAnalyze(\'' + coin.id + '\')">Analyse</button>' +
+'<span class="small">Rang nach Market Cap: ' + coin.marketCapRank + '</span></div>' +
+'<span class="star active" onclick="toggleWatchlist(\'' + coin.id + '\', event)">&#9733;</span>' +
 '</div>'
 );
 }).join("");
@@ -599,8 +1440,21 @@ time: new Date().toLocaleString("de-DE")
 });
 
 history = history.slice(0, 5);
-
 localStorage.setItem("history", JSON.stringify(history));
+}
+
+function deleteHistoryItem(index, event) {
+if (event) event.stopPropagation();
+
+let history = JSON.parse(localStorage.getItem("history") || "[]");
+history.splice(index, 1);
+localStorage.setItem("history", JSON.stringify(history));
+loadHistory();
+}
+
+function clearHistory() {
+localStorage.removeItem("history");
+loadHistory();
 }
 
 function loadHistory() {
@@ -610,13 +1464,426 @@ if (!box) return;
 const history = JSON.parse(localStorage.getItem("history") || "[]");
 
 if (!history.length) {
-box.innerHTML = '<p class="small">Noch keine Analyse durchgeführt.</p>';
+box.innerHTML = '<p class="small">Noch keine Analyse durchgef&#252;hrt.</p>';
 return;
 }
 
-box.innerHTML = history.map(function (item) {
-return '<button class="pill" onclick="quickAnalyze(\'' + item.id + '\')">' + item.name + ' - ' + item.time + '</button>';
+box.innerHTML =
+'<button class="secondary-btn" onclick="clearHistory()">Alle Analysen l&#246;schen</button>' +
+history.map(function (item, index) {
+return (
+'<div class="coin-card" onclick="quickAnalyze(\'' + item.id + '\')">' +
+'<div><strong>' + item.name + '</strong><br><span class="small">' + item.time + '</span></div>' +
+'<button class="secondary-btn" onclick="deleteHistoryItem(' + index + ', event)">L&#246;schen</button>' +
+'</div>'
+);
 }).join("");
+}
+
+async function loadTrending() {
+const box = document.getElementById("trending");
+if (!box) return;
+
+try {
+const res = await fetch("/api/trending", {
+headers: { "x-app-password": getPassword() }
+});
+
+const data = await res.json();
+
+if (!data.coins.length) {
+box.innerHTML = '<p class="small">Trending aktuell nicht verf&#252;gbar.</p>';
+return;
+}
+
+box.innerHTML = data.coins.map(function (coin) {
+const hasChange = typeof coin.change24h === "number";
+const changeClass = hasChange && coin.change24h >= 0 ? "positive" : "negative";
+const changeText = hasChange ? Number(coin.change24h).toFixed(2) + "% (24h)" : "keine 24h Daten";
+
+return (
+'<div class="coin-card" onclick="quickAnalyze(\'' + coin.id + '\')">' +
+'<img src="' + coin.thumb + '" onerror="this.style.display=\'none\'">' +
+'<div><strong>' + coin.name + '</strong><br>' +
+'<span class="small">' + coin.symbol.toUpperCase() + ' | Rang nach Market Cap: ' + coin.rank + '</span><br>' +
+'<span class="' + changeClass + '">' + changeText + '</span></div>' +
+'<span class="star ' + (isInWatchlist(coin.id) ? "active" : "") + '" onclick="toggleWatchlist(\'' + coin.id + '\', event)">&#9733;</span>' +
+'</div>'
+);
+}).join("");
+} catch (e) {
+box.innerHTML = '<p class="small">Trending aktuell nicht verf&#252;gbar.</p>';
+}
+}
+
+async function loadTopGainers() {
+const box = document.getElementById("topGainers");
+if (!box) return;
+
+try {
+const res = await fetch("/api/top-gainers", {
+headers: { "x-app-password": getPassword() }
+});
+
+const data = await res.json();
+
+if (!data.coins.length) {
+box.innerHTML = '<p class="small">Top Gewinner aktuell nicht verf&#252;gbar.</p>';
+return;
+}
+
+box.innerHTML = data.coins.map(function (coin) {
+return (
+'<div class="coin-card" onclick="quickAnalyze(\'' + coin.id + '\')">' +
+'<img src="' + coin.image + '" onerror="this.style.display=\'none\'">' +
+'<div><strong>' + coin.name + '</strong><br>$' + money(coin.price) + '<br>' +
+'<span class="positive">+' + Number(coin.change24h).toFixed(2) + '% (24h)</span><br>' +
+'<span class="small">Rang nach Market Cap: ' + coin.marketCapRank + '</span></div>' +
+'<span class="star ' + (isInWatchlist(coin.id) ? "active" : "") + '" onclick="toggleWatchlist(\'' + coin.id + '\', event)">&#9733;</span>' +
+'</div>'
+);
+}).join("");
+} catch (e) {
+box.innerHTML = '<p class="small">Top Gewinner aktuell nicht verf&#252;gbar.</p>';
+}
+}
+
+async function loadTopLosers() {
+const box = document.getElementById("topLosers");
+if (!box) return;
+
+try {
+const res = await fetch("/api/top-losers", {
+headers: { "x-app-password": getPassword() }
+});
+
+const data = await res.json();
+
+if (!data.coins.length) {
+box.innerHTML = '<p class="small">Top Verlierer aktuell nicht verf&#252;gbar.</p>';
+return;
+}
+
+box.innerHTML = data.coins.map(function (coin) {
+return (
+'<div class="coin-card" onclick="quickAnalyze(\'' + coin.id + '\')">' +
+'<img src="' + coin.image + '" onerror="this.style.display=\'none\'">' +
+'<div><strong>' + coin.name + '</strong><br>$' + money(coin.price) + '<br>' +
+'<span class="negative">' + Number(coin.change24h).toFixed(2) + '% (24h)</span><br>' +
+'<span class="small">Rang nach Market Cap: ' + coin.marketCapRank + '</span></div>' +
+'<span class="star ' + (isInWatchlist(coin.id) ? "active" : "") + '" onclick="toggleWatchlist(\'' + coin.id + '\', event)">&#9733;</span>' +
+'</div>'
+);
+}).join("");
+} catch (e) {
+box.innerHTML = '<p class="small">Top Verlierer aktuell nicht verf&#252;gbar.</p>';
+}
+}
+
+async function loadMarketOverview() {
+const box = document.getElementById("marketOverview");
+if (!box) return;
+
+box.innerHTML = '<p class="small">Marktdaten werden geladen...</p>';
+
+try {
+const res = await fetch("/api/market-overview", {
+headers: { "x-app-password": getPassword() }
+});
+
+const data = await res.json();
+
+box.innerHTML =
+'<div class="grid">' +
+'<div class="stat clickable" onclick="openInfo(\'cryptos\')">&#129689; Kryptow&#228;hrungen<br>' + bigNumber(data.activeCryptos) + '<div class="hint">Klicken f&#252;r Erkl&#228;rung</div></div>' +
+'<div class="stat clickable" onclick="openExchangeModal()">&#127974; B&#246;rsen<br>' + bigNumber(data.markets) + '<div class="hint">Klicken f&#252;r B&#246;rsen & Geb&#252;hren</div></div>' +
+'<div class="stat clickable" onclick="openInfo(\'marketcap\')">&#127757; Gesamt Market Cap<br>$' + bigNumber(data.totalMarketCap) + '<br><span class="' + (data.marketCapChange24h >= 0 ? 'positive' : 'negative') + '">' + Number(data.marketCapChange24h).toFixed(2) + '%</span><div class="hint">Klicken f&#252;r Erkl&#228;rung</div></div>' +
+'<div class="stat clickable" onclick="openInfo(\'volume\')">&#128181; 24h Volumen<br>$' + bigNumber(data.totalVolume24h) + '<div class="hint">Klicken f&#252;r Erkl&#228;rung</div></div>' +
+'<div class="stat clickable" onclick="openInfo(\'btcdom\')">&#8383; BTC Dominanz<br>' + data.btcDominance + '%<div class="hint">Klicken f&#252;r Erkl&#228;rung</div></div>' +
+'<div class="stat clickable" onclick="openInfo(\'ethdom\')">&#926; ETH Dominanz<br>' + data.ethDominance + '%<div class="hint">Klicken f&#252;r Erkl&#228;rung</div></div>' +
+'<div class="stat clickable" onclick="openInfo(\'feargreed\')">&#128552; Fear & Greed<br>' + data.fearGreed + '<div class="bar-wrap"><div class="bar" style="width:' + data.fearGreedValue + '%"></div></div><div class="hint">Klicken f&#252;r Erkl&#228;rung</div></div>' +
+'<div class="stat clickable" onclick="openInfo(\'altstrength\')">&#127754; Altcoin St&#228;rke<br>' + data.altcoinStrength + '/100<div class="hint">Klicken f&#252;r Erkl&#228;rung</div></div>' +
+'<div class="stat clickable" onclick="openInfo(\'cryptorsi\')">&#128201; &#216; Krypto RSI<br>' + data.averageCryptoRsi + '/100<div class="hint">Klicken f&#252;r Erkl&#228;rung</div></div>' +
+'</div>';
+} catch (e) {
+box.innerHTML = '<p class="small">Markt&#252;bersicht aktuell nicht verf&#252;gbar.</p>';
+}
+}
+
+function drawMiniMarketChart(title) {
+const canvas = document.getElementById("miniInfoChart");
+if (!canvas) return;
+
+const labels = ["2017", "2018", "2020", "2021", "2022", "2024", "2025"];
+const data = [0.6, 0.13, 0.75, 3.0, 0.8, 2.5, 3.2];
+
+if (miniChart) miniChart.destroy();
+
+miniChart = new Chart(canvas, {
+type: "line",
+data: {
+labels: labels,
+datasets: [{
+label: title,
+data: data,
+borderColor: "#00ff99",
+backgroundColor: "rgba(0,255,153,0.08)",
+fill: true,
+tension: 0.3
+}]
+},
+options: {
+plugins: { legend: { display: false } },
+scales: {
+x: { ticks: { color: "white" } },
+y: { ticks: { color: "white" } }
+}
+}
+});
+}
+
+function openInfo(type) {
+const content = {
+cryptos: {
+title: "&#129689; Kryptow&#228;hrungen, Coins & Tokens einfach erkl&#228;rt",
+body: `
+<p>&#129689; <strong>Kryptow&#228;hrungen</strong> sind digitale Verm&#246;genswerte. Sie k&#246;nnen als Zahlungsmittel, Netzwerk-Token, Governance-Token oder Spekulationsobjekt genutzt werden.</p>
+<p>&#128313; <strong>Coin:</strong> Ein Coin hat meistens eine eigene Blockchain. Beispiel: Bitcoin l&#228;uft auf der Bitcoin-Blockchain, Ethereum l&#228;uft auf der Ethereum-Blockchain.</p>
+<p>&#128312; <strong>Token:</strong> Ein Token l&#228;uft oft auf einer bestehenden Blockchain. Beispiel: Viele Meme-Coins oder DeFi-Projekte laufen als Token auf Ethereum, Solana oder BNB Chain.</p>
+<p>&#9888;&#65039; Wichtig: Viele kleine Tokens k&#246;nnen sehr stark schwanken. Deshalb sollte man Market Cap, Liquidit&#228;t, Volumen und Risiko immer mit betrachten.</p>
+`
+},
+marketcap: {
+title: "&#127757; Market Cap ausf&#252;hrlich erkl&#228;rt",
+body: `
+<p>&#127757; <strong>Market Cap</strong> bedeutet Marktkapitalisierung.</p>
+<p>Formel: <strong>Preis &#215; umlaufende Menge = Market Cap</strong>.</p>
+<p>Beispiel: Wenn ein Coin 10 &#8364; kostet und 1.000.000 Coins im Umlauf sind, liegt die Market Cap bei 10.000.000 &#8364;.</p>
+<p>&#128994; Gro&#223;e Market Cap: oft stabiler, meistens weniger extreme Bewegungen.</p>
+<p>&#128993; Mittlere Market Cap: mehr Wachstum m&#246;glich, aber auch mehr Risiko.</p>
+<p>&#128308; Kleine Market Cap: hohe Chancen, aber auch sehr hohes Risiko.</p>
+<canvas id="miniInfoChart" class="mini-chart"></canvas>
+<p class="small">Beispielhafte Darstellung zur Erkl&#228;rung. F&#252;r echte historische Gesamtdaten nutzen wir sp&#228;ter eine separate Datenquelle.</p>
+`,
+chart: true
+},
+volume: {
+title: "&#128181; 24h Volumen ausf&#252;hrlich erkl&#228;rt",
+body: `
+<p>&#128181; Das <strong>24h Handelsvolumen</strong> zeigt, wie viel innerhalb der letzten 24 Stunden gehandelt wurde.</p>
+<p>&#128994; Hohes Volumen kann bedeuten: Viele Marktteilnehmer interessieren sich f&#252;r den Coin.</p>
+<p>&#128308; Niedriges Volumen kann bedeuten: Es gibt wenig Liquidit&#228;t und der Preis kann leichter manipuliert werden.</p>
+<p>&#9888;&#65039; Gerade bei kleinen Coins ist Volumen extrem wichtig, weil man sonst schwer rein- oder rauskommt.</p>
+`
+},
+btcdom: {
+title: "&#8383; BTC Dominanz ausf&#252;hrlich erkl&#228;rt",
+body: `
+<p>&#8383; Die <strong>Bitcoin Dominanz</strong> zeigt, wie gro&#223; der Bitcoin-Anteil am gesamten Kryptomarkt ist.</p>
+<p>&#128200; Steigt die BTC-Dominanz, flie&#223;t oft mehr Kapital in Bitcoin als in Altcoins.</p>
+<p>&#128201; F&#228;llt die BTC-Dominanz, k&#246;nnten Altcoins st&#228;rker laufen.</p>
+<p>&#127754; F&#252;r Altcoin-Trader ist dieser Wert sehr wichtig, weil er Hinweise auf m&#246;gliche Altcoin-Phasen geben kann.</p>
+`
+},
+ethdom: {
+title: "&#926; ETH Dominanz ausf&#252;hrlich erkl&#228;rt",
+body: `
+<p>&#926; Die <strong>Ethereum Dominanz</strong> zeigt den Ethereum-Anteil am gesamten Kryptomarkt.</p>
+<p>&#128200; Steigende ETH-Dominanz k&#246;nnte auf St&#228;rke im Smart-Contract-, DeFi- oder Altcoin-Sektor hinweisen.</p>
+<p>&#128201; Sinkende ETH-Dominanz kann bedeuten, dass Kapital eher in Bitcoin, Stablecoins oder andere Sektoren flie&#223;t.</p>
+`
+},
+feargreed: {
+title: "&#128552; Fear & Greed Index ausf&#252;hrlich erkl&#228;rt",
+body: `
+<p>&#128552; Der Fear & Greed Index misst die Marktstimmung von 0 bis 100.</p>
+<p>&#128308; 0&#8211;25: Extreme Angst. Viele Marktteilnehmer sind vorsichtig oder panisch.</p>
+<p>&#128993; 25&#8211;50: Angst bis neutral.</p>
+<p>&#128994; 50&#8211;75: Gier / Optimismus.</p>
+<p>&#128293; 75&#8211;100: Extreme Gier. Der Markt k&#246;nnte &#252;berhitzt sein.</p>
+<p>Wichtig: Extreme Angst kann Chancen anzeigen, extreme Gier kann Risiko anzeigen. Es ist aber kein garantiertes Signal.</p>
+`
+},
+altstrength: {
+title: "&#127754; Altcoin St&#228;rke ausf&#252;hrlich erkl&#228;rt",
+body: `
+<p>&#127754; Die Altcoin St&#228;rke zeigt vereinfacht, ob Altcoins gegen&#252;ber Bitcoin st&#228;rker wirken k&#246;nnten.</p>
+<p>&#128201; Wenn BTC-Dominanz stark steigt, laufen viele Altcoins oft schw&#228;cher.</p>
+<p>&#128200; Wenn BTC-Dominanz f&#228;llt und Marktstimmung positiv ist, k&#246;nnten Altcoins mehr Dynamik entwickeln.</p>
+<p>F&#252;r eine echte Altcoin-Season braucht man sp&#228;ter zus&#228;tzliche Daten wie Altcoin-Season-Index und Performance-Vergleich gegen BTC.</p>
+`
+},
+cryptorsi: {
+title: "&#128201; &#216; Krypto RSI ausf&#252;hrlich erkl&#228;rt",
+body: `
+<p>&#128201; Der RSI ist ein Momentum-Indikator.</p>
+<p>&#128308; &#220;ber 70: Markt k&#246;nnte &#252;berkauft oder hei&#223; gelaufen sein.</p>
+<p>&#128994; Unter 30: Markt k&#246;nnte &#252;berverkauft sein und eine Erholung versuchen.</p>
+<p>&#9888;&#65039; Der &#216; Krypto RSI hier ist eine vereinfachte N&#228;herung aus dem Momentum der Top-Coins. Er ersetzt keine vollst&#228;ndige technische Analyse.</p>
+`
+}
+};
+
+const item = content[type];
+
+document.getElementById("infoTitle").innerHTML = item.title;
+document.getElementById("infoBody").innerHTML = item.body;
+document.getElementById("infoModal").style.display = "block";
+
+if (item.chart) {
+setTimeout(function () {
+drawMiniMarketChart(item.title);
+}, 100);
+}
+}
+
+function closeInfoModal() {
+document.getElementById("infoModal").style.display = "none";
+}
+
+async function openExchangeModal() {
+document.getElementById("exchangeModal").style.display = "block";
+const box = document.getElementById("exchangeFees");
+box.innerHTML = '<p class="small">Lade B&#246;rsendaten...</p>';
+
+try {
+const res = await fetch("/api/exchange-fees", {
+headers: { "x-app-password": getPassword() }
+});
+
+const data = await res.json();
+
+box.innerHTML =
+'<div class="info-box"><p>&#127974; CEX = zentrale B&#246;rse, z.B. Binance oder Coinbase. DEX = dezentrale B&#246;rse, z.B. Uniswap oder PancakeSwap. Geb&#252;hren k&#246;nnen je nach Produkt, VIP-Level, Land und Rabatt variieren.</p></div>' +
+'<div class="grid">' +
+data.exchanges.map(function (ex) {
+return '<div class="stat">' +
+'<strong>#' + ex.rank + ' ' + ex.name + '</strong><br>' +
+'Maker: ' + ex.maker + '<br>' +
+'Taker: ' + ex.taker + '<br>' +
+'KYC: ' + ex.kyc + '<br>' +
+'Karte: ' + ex.card + '<br>' +
+(ex.cardUrl ? '<a href="' + ex.cardUrl + '" target="_blank">Kreditkarte öffnen</a><br>' : '') +
+'Futures: ' + ex.futures + '<br>' +
+'Staking: ' + ex.staking + '<br>' +
+'<a href="' + ex.url + '" target="_blank">Geb&#252;hren-Seite &#246;ffnen</a>' +
+'<div class="hint">' + ex.note + '</div>' +
+'</div>';
+}).join("") +
+'</div>';
+} catch (e) {
+box.innerHTML = '<p class="small">Geb&#252;hrenvergleich aktuell nicht verf&#252;gbar.</p>';
+}
+}
+
+function closeExchangeModal() {
+document.getElementById("exchangeModal").style.display = "none";
+}
+
+async function explainTerm(mode) {
+  window.followupCount = 0;
+const term = document.getElementById("lexiconTerm").value || "Blockchain";
+const box = document.getElementById("lexiconResult");
+
+lexiconHistory = [];
+lexiconHistory.push("Frage: " + term);
+
+box.innerHTML = '<div class="loading">&#129504; Erkl&#228;rung wird erstellt...</div>';
+
+try {
+const res = await fetch("/api/explain", {
+method: "POST",
+headers: {
+"Content-Type": "application/json",
+"x-app-password": getPassword()
+},
+body: JSON.stringify({
+term: term,
+mode: mode
+})
+});
+
+const data = await res.json();
+
+lexiconHistory.push("Antwort: " + data.explanation);
+
+box.innerHTML = `
+<div class="lexicon-chat">
+<pre>${data.explanation}</pre>
+</div>
+
+<h3>&#128172; Folgefrage stellen</h3>
+<input id="lexiconFollowup" placeholder="z.B. Warum ist das wichtig?">
+<button onclick="askLexiconFollowup('${mode}')">Weiterfragen</button>
+<div id="lexiconFollowupResult"></div>
+`;
+
+setTimeout(function () {
+const followupInput = document.getElementById("lexiconFollowup");
+if (followupInput) {
+followupInput.addEventListener("keydown", function (event) {
+if (event.key === "Enter") {
+askLexiconFollowup(mode);
+}
+});
+}
+}, 100);
+} catch (e) {
+box.innerHTML = '<p class="danger">Erkl&#228;rung aktuell nicht verf&#252;gbar.</p>';
+}
+}
+
+async function askLexiconFollowup(mode) {
+const followup = document.getElementById("lexiconFollowup").value;
+const box = document.getElementById("lexiconFollowupResult");
+
+if (!followup) return;
+
+if (!window.followupCount) window.followupCount = 0;
+
+if (window.followupCount >= 5) {
+  box.innerHTML += '<div class="lexicon-chat"><p class="danger">❌ Maximal 5 Folgefragen erreicht. Bitte starte neu.</p></div>';
+  return;
+}
+
+window.followupCount++;
+
+lexiconHistory.push("Folgefrage " + window.followupCount + ": " + followup);
+
+box.innerHTML += '<div class="loading">&#129504; Antwort wird erstellt...</div>';
+
+try {
+const combinedQuestion =
+lexiconHistory.join("\n") +
+"\nBitte beantworte die letzte Folgefrage einfach und verst&#228;ndlich: " +
+followup;
+
+const res = await fetch("/api/explain", {
+method: "POST",
+headers: {
+"Content-Type": "application/json",
+"x-app-password": getPassword()
+},
+body: JSON.stringify({
+term: combinedQuestion,
+mode: mode
+})
+});
+
+const data = await res.json();
+
+lexiconHistory.push("Antwort: " + data.explanation);
+
+box.innerHTML = `
+<div class="lexicon-chat">
+<pre>${data.explanation}</pre>
+</div>
+`;
+
+document.getElementById("lexiconFollowup").value = "";
+} catch (e) {
+box.innerHTML = '<p class="danger">Antwort aktuell nicht verf&#252;gbar.</p>';
+}
 }
 </script>
 
