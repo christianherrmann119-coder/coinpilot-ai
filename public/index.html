@@ -41,13 +41,12 @@ font-weight: bold;
 }
 
 .logout-fixed {
-position: fixed;
-top: 16px;
-right: 16px;
+position: static;
 background: #ff4d4d;
 color: white;
 z-index: 200;
 box-shadow: 0 0 10px rgba(255,77,77,0.35);
+white-space: nowrap;
 }
 
 .secondary-btn {
@@ -340,28 +339,493 @@ width: 100%;
 box-sizing: border-box;
 }
 }
+
+
+.top-controls {
+position: fixed;
+top: 16px;
+right: 16px;
+z-index: 300;
+display: flex;
+gap: 8px;
+align-items: center;
+}
+
+.lang-toggle {
+background: #30364a;
+color: white;
+box-shadow: 0 0 10px rgba(0,255,153,0.18);
+}
+.lang-toggle.active {
+background: #00ff99;
+color: #111;
+}
+
+.legal-footer {
+background: #111820;
+border: 1px solid #30364a;
+padding: 16px;
+border-radius: 14px;
+margin-top: 20px;
+color: #bbb;
+font-size: 12px;
+line-height: 1.6;
+}
+
+.cycle-row {
+display: grid;
+grid-template-columns: repeat(6, 1fr);
+gap: 6px;
+margin-top: 10px;
+}
+
+.cycle-phase {
+background: #222733;
+border-radius: 10px;
+padding: 10px;
+text-align: center;
+font-size: 12px;
+border: 1px solid transparent;
+}
+
+.cycle-phase.active {
+border-color: #00ff99;
+box-shadow: 0 0 12px rgba(0,255,153,0.35);
+}
+
+.scam-ok { border-left: 5px solid #00ff99; }
+.scam-warning { border-left: 5px solid #ffaa00; }
+.scam-neutral { border-left: 5px solid #8ab4ff; }
+
+.coin-card {
+width: 100%;
+box-sizing: border-box;
+justify-content: flex-start;
+}
+
+.watchlist-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+gap: 10px;
+}
+
+.coin-card {
+width: 100%;
+box-sizing: border-box;
+justify-content: flex-start;
+}
+
+.coin-card > div {
+flex: 1;
+min-width: 0;
+}
+
+.exchange-links a, .legal-footer a {
+display: inline-block;
+margin-top: 5px;
+margin-right: 8px;
+}
+
+
+/* FINAL FIX: Cards nebeneinander wie gestern */
+#trending, #topGainers, #topLosers {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+gap: 10px;
+align-items: stretch;
+}
+#watchlist {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+gap: 10px;
+}
+#trending .coin-card, #topGainers .coin-card, #topLosers .coin-card, #watchlist .coin-card {
+width: 100%;
+min-width: 0;
+box-sizing: border-box;
+margin: 0;
+}
+#trending .coin-card > div, #topGainers .coin-card > div, #topLosers .coin-card > div, #watchlist .coin-card > div {
+flex: 1;
+min-width: 0;
+}
+@media (max-width: 600px) {
+#trending, #topGainers, #topLosers, #watchlist {
+grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+#trending .coin-card, #topGainers .coin-card, #topLosers .coin-card, #watchlist .coin-card {
+font-size: 12px;
+padding: 8px;
+}
+}
+
+
+
+/* FINAL UX UPGRADES */
+.top-controls .lang-toggle { min-width: 92px; }
+.history-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+gap: 8px;
+margin-top: 8px;
+}
+.history-item {
+background: #222733;
+border-radius: 10px;
+padding: 7px;
+cursor: pointer;
+font-size: 11px;
+line-height: 1.3;
+min-height: 54px;
+}
+.history-item button { padding: 7px; font-size: 12px; }
+.scam-list {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+gap: 10px;
+}
+.scam-check-card {
+background: #111820;
+border-radius: 12px;
+padding: 14px;
+cursor: pointer;
+border-left: 5px solid #8ab4ff;
+}
+.scam-check-card.ok { border-left-color: #00ff99; }
+.scam-check-card.warning { border-left-color: #ffaa00; }
+.scam-check-card.neutral { border-left-color: #8ab4ff; }
+.scam-check-title {
+color: #00e5ff;
+font-weight: bold;
+font-size: 15px;
+margin-bottom: 6px;
+}
+.scam-check-value { color: #fff; font-weight: bold; margin-bottom: 5px; }
+.scam-check-detail { color: #bbb; font-size: 13px; line-height: 1.45; }
+.start-cycle-card { margin-top: 20px; }
+.phase-card { min-height: 95px; }
+.phase-card strong { color: #00e5ff; }
+.legal-footer p { margin: 8px 0; }
+
+.tax-link-row a {
+display: inline-block;
+margin: 6px 8px 6px 0;
+}
+.tax-guide-card {
+border-left: 5px solid #00e5ff;
+}
+.tax-explain {
+background: #111820;
+padding: 14px;
+border-radius: 12px;
+margin-top: 10px;
+line-height: 1.65;
+}
+.cycle-explain-inline {
+background: #111820;
+padding: 15px;
+border-radius: 12px;
+margin-top: 10px;
+line-height: 1.65;
+}
+.history-grid {
+grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)) !important;
+}
+.history-item {
+min-height: 38px !important;
+padding: 5px !important;
+font-size: 10px !important;
+}
+.history-item button {
+padding: 4px 6px !important;
+font-size: 10px !important;
+}
+
+
+/* V6 FINAL POLISH */
+.control-panel {
+background: #111820;
+border: 1px solid #30364a;
+border-radius: 12px;
+padding: 8px;
+margin: 8px 0;
+}
+.control-panel h4 {
+margin: 4px 0 6px 0;
+font-size: 13px;
+color: #00e5ff;
+}
+.control-row {
+display: flex;
+flex-wrap: wrap;
+gap: 4px;
+}
+.control-row .pill {
+padding: 7px 10px;
+font-size: 12px;
+margin: 2px;
+}
+.tabs .tab {
+font-size: 15px;
+padding: 12px 14px;
+border: 1px solid #30364a;
+}
+.tokenomics-hero {
+border-left: 5px solid #00e5ff;
+}
+.tokenomics-note {
+background: #111820;
+border-left: 4px solid #ffaa00;
+padding: 12px;
+border-radius: 10px;
+margin-top: 8px;
+}
+.scam-pro-layout {
+display: grid;
+grid-template-columns: 280px 1fr;
+gap: 12px;
+align-items: start;
+}
+.scam-score-panel {
+background: #111820;
+border-radius: 14px;
+padding: 16px;
+border: 1px solid #30364a;
+position: sticky;
+top: 10px;
+}
+.scam-check-card {
+transition: transform .15s ease, background .15s ease;
+}
+.scam-check-card:hover {
+transform: translateY(-2px);
+background: #182030;
+}
+.scam-link-row a {
+display: inline-block;
+margin-top: 8px;
+}
+.score-click {
+cursor: pointer;
+color: #00e5ff;
+text-decoration: underline;
+}
+@media (max-width: 800px) {
+.scam-pro-layout { grid-template-columns: 1fr; }
+.scam-score-panel { position: static; }
+}
+
+
+
+/* V7 ULTRA FINAL ADDITIONS */
+.portfolio-card .portfolio-slice {
+border-left: 5px solid #00e5ff;
+min-height: 118px;
+}
+.portfolio-example {
+background: #111820;
+border-radius: 12px;
+padding: 15px;
+margin-top: 12px;
+line-height: 1.7;
+}
+.education-toggle-box {
+background: #111820;
+border-radius: 12px;
+padding: 15px;
+margin-top: 10px;
+line-height: 1.75;
+border-left: 4px solid #00ff99;
+}
+.compact-control-title {
+font-size: 12px;
+color: #8ab4ff;
+margin: 5px 0;
+}
+.rainbow-chart {
+border-radius: 14px;
+overflow: hidden;
+margin: 12px 0;
+border: 1px solid #30364a;
+}
+.rainbow-band {
+padding: 10px 14px;
+font-weight: bold;
+color: #111;
+}
+.rainbow-red { background: #ff4d4d; }
+.rainbow-orange { background: #ff9f1c; }
+.rainbow-yellow { background: #ffe066; }
+.rainbow-green { background: #00ff99; }
+.rainbow-blue { background: #8ab4ff; }
+.altcoin-meter {
+background: #30364a;
+height: 24px;
+border-radius: 20px;
+overflow: hidden;
+margin: 10px 0;
+}
+.altcoin-meter-fill {
+background: linear-gradient(90deg, #ffaa00, #00ff99);
+height: 100%;
+text-align: right;
+padding-right: 8px;
+color: #111;
+font-weight: bold;
+line-height: 24px;
+}
+.score-breakdown-list {
+display: grid;
+gap: 8px;
+}
+.score-breakdown-list div {
+background: #222733;
+padding: 10px;
+border-radius: 10px;
+}
+.watchlist-empty-card {
+background: #222733;
+border-radius: 10px;
+padding: 14px;
+min-height: 90px;
+}
+.phase-card strong, .portfolio-slice strong, .scam-check-card strong {
+color: #00e5ff;
+}
+.mini-button-row {
+display: flex;
+flex-wrap: wrap;
+gap: 6px;
+margin-top: 8px;
+}
+.mini-button-row .pill {
+padding: 8px 11px;
+font-size: 12px;
+}
+
+
+/* Multi-Market Navigation */
+.market-nav {
+display: flex;
+gap: 8px;
+flex-wrap: wrap;
+margin: 14px 0 18px 0;
+}
+.market-tab {
+background: #222733;
+color: white;
+border: 1px solid #30364a;
+border-radius: 12px;
+padding: 10px 14px;
+width: auto;
+}
+.market-tab.active {
+background: #00ff99;
+color: #111;
+}
+.market-screen {
+display: none;
+}
+.market-screen.active {
+display: block;
+}
+.market-asset-card {
+min-height: 130px;
+}
+.market-search-row {
+display: flex;
+gap: 8px;
+flex-wrap: wrap;
+align-items: center;
+}
+.market-search-row input {
+max-width: 320px;
+}
+
+.v9-update-badge {
+display: inline-block;
+margin: 6px 0 14px 0;
+padding: 8px 12px;
+border-radius: 999px;
+background: #123524;
+color: #00ff99;
+border: 1px solid rgba(0,255,153,0.35);
+font-size: 12px;
+font-weight: bold;
+}
+.asset-live-row {
+display: flex;
+justify-content: space-between;
+gap: 8px;
+flex-wrap: wrap;
+margin-top: 8px;
+}
+.asset-live-row span {
+background: #111820;
+border-radius: 8px;
+padding: 6px 8px;
+font-size: 12px;
+}
+.performance-toolbar {
+margin: 12px 0;
+padding: 12px;
+border-radius: 12px;
+background: #111820;
+}
+.performance-toolbar button {
+width: auto;
+}
+.market-chart-wrap {
+margin-top: 12px;
+}
+.market-chart-canvas {
+min-height: 260px;
+max-height: 320px;
+}
+.education-chart-card {
+background: #111820;
+padding: 12px;
+border-radius: 12px;
+margin-top: 12px;
+}
+
 </style>
 </head>
 
 <body>
 
-<h1>&#128640; CoinPilot AI PRO</h1>
+<h1 id="mainTitle">&#128640; CoinPilot AI PRO</h1>
+<div class="v9-update-badge">V9 aktiv: Krypto + Aktien + ETFs + Indizes + Edelmetalle</div>
 
 <div id="loginBox" class="login">
 <h3>&#128272; Zugang</h3>
-<p>Bitte Passwort eingeben:</p>
-<input id="passwordInput" type="password" placeholder="Passwort" onkeypress="if(event.key==='Enter'){login()}">
-<button onclick="login()">Einloggen</button>
+<p id="loginText">Bitte Passwort eingeben:</p>
+<input id="passwordInput" type="password" placeholder="Passwort">
+<button id="loginButton" onclick="login()">Einloggen</button>
 <p id="loginError" class="danger"></p>
 </div>
 
 <div id="app" style="display:none;">
+<div class="top-controls">
+<button class="lang-toggle" onclick="setLanguage('DE')" id="languageDEButton">Deutsch</button>
+<button class="lang-toggle" onclick="setLanguage('EN')" id="languageENButton">English</button>
 <button class="logout-fixed" onclick="logout()">Logout</button>
+</div>
+
+<div class="market-nav" id="mainMarketNav">
+<button class="market-tab active" onclick="switchMarketArea('crypto')">&#8383; Krypto</button>
+<button class="market-tab" onclick="switchMarketArea('stocks')">&#128200; Aktien</button>
+<button class="market-tab" onclick="switchMarketArea('etfs')">&#128202; ETFs</button>
+<button class="market-tab" onclick="switchMarketArea('indices')">&#127757; Indizes</button>
+<button class="market-tab" onclick="switchMarketArea('metals')">&#129351; Edelmetalle</button>
+</div>
+
+<div id="cryptoMarketScreen" class="market-screen active">
 
 <div class="card">
-<input id="coin" placeholder="Coin suchen, z.B. bitcoin, eth, kite" onkeypress="if(event.key==='Enter'){analyze()}">
-<button onclick="analyze()">Analysieren</button>
-<button onclick="scrollToWatchlist()" class="secondary-btn">&#11088; Watchlist anzeigen</button>
+<input id="coin" placeholder="Coin suchen, z.B. bitcoin, eth, kite">
+<button id="analyzeButton" onclick="analyze()">Analysieren</button>
+<button id="watchlistJumpButton" onclick="scrollToWatchlist()" class="secondary-btn">&#11088; Watchlist anzeigen</button>
 
 <div id="suggestions"></div>
 
@@ -382,29 +846,94 @@ box-sizing: border-box;
 <div id="result"></div>
 
 <div class="card">
-<h3>&#127757; Markt&#252;bersicht</h3>
+<h3 id="marketTitle">&#127757; Markt&#252;bersicht</h3>
 <div id="marketOverview"></div>
 
-<h3>&#128293; Trending Coins</h3>
+<h3 id="trendingTitle">&#128293; Trending Coins</h3>
 <p class="small">Zeitraum: letzte 24 Stunden, sofern Daten verf&#252;gbar sind.</p>
 <div id="trending"></div>
 
-<h3>&#128640; Top Gewinner</h3>
+<h3 id="gainersTitle">&#128640; Top Gewinner</h3>
 <p class="small">Zeitraum: letzte 24 Stunden.</p>
 <div id="topGainers"></div>
 
-<h3>&#128315; Top Verlierer</h3>
+<h3 id="losersTitle">&#128315; Top Verlierer</h3>
 <p class="small">Zeitraum: letzte 24 Stunden.</p>
 <div id="topLosers"></div>
 </div>
 
+
+<div class="card portfolio-card" id="portfolioGuideSection">
+<h3 id="portfolioGuideTitle">&#128202; Musterportfolio & Risiko-Management</h3>
+<p class="small" id="portfolioGuideIntro">Education-Beispiel: So k&#246;nnte eine risiko-bewusste Krypto-Struktur aussehen. Keine Anlageberatung.</p>
+<div class="grid">
+<div class="stat portfolio-slice" onclick="showPortfolioGuide('foundation')"><strong>&#8383; BTC / ETH Fundament</strong><br>40-60%<br><span class="small">Marktanker und Basis.</span></div>
+<div class="stat portfolio-slice" onclick="showPortfolioGuide('large')"><strong>&#128200; Large Caps</strong><br>20-30%<br><span class="small">Etablierte Top-Projekte.</span></div>
+<div class="stat portfolio-slice" onclick="showPortfolioGuide('mid')"><strong>&#128640; Mid Caps</strong><br>10-20%<br><span class="small">Mehr Chancen, mehr Risiko.</span></div>
+<div class="stat portfolio-slice" onclick="showPortfolioGuide('small')"><strong>&#9888;&#65039; Small Caps</strong><br>5-10%<br><span class="small">Sehr spekulativer Anteil.</span></div>
+<div class="stat portfolio-slice" onclick="showPortfolioGuide('cash')"><strong>&#128181; Cash / Stablecoins</strong><br>10-20%<br><span class="small">Reserve f&#252;r Chancen und Sicherheit.</span></div>
+</div>
+<div id="portfolioGuideExplanation" class="portfolio-example">
+<strong>&#128204; Beispiel mit 1.000 Euro:</strong><br>
+500 Euro BTC/ETH, 250 Euro Large Caps, 150 Euro Mid Caps, 50 Euro Small Caps, 50 Euro Cash. Das ist nur ein Lernbeispiel und keine Empfehlung.
+</div>
+</div>
+
 <div class="card">
-<h3>&#129504; CoinPilot Lexikon</h3>
-<p class="small">Krypto- und Trading-Begriffe einfach erkl&#228;ren lassen.</p>
+<h3 id="lexiconTitle">&#129504; CoinPilot Lexikon</h3>
+<p id="lexiconSubtitle" class="small">Krypto- und Trading-Begriffe einfach erkl&#228;ren lassen.</p>
 <input id="lexiconTerm" placeholder="z.B. Blockchain, Smart Contract, Fibonacci">
-<button onclick="explainTerm('beginner')">Anf&#228;nger-Modus</button>
-<button onclick="explainTerm('pro')">Profi-Modus</button>
+<button id="beginnerButton" onclick="explainTerm('beginner')">Anf&#228;nger-Modus</button>
+<button id="proButton" onclick="explainTerm('pro')">Profi-Modus</button>
 <div id="lexiconResult"></div>
+</div>
+
+<div class="card" id="investmentGuideSection">
+<h3 id="investmentGuideTitle">&#128176; Investment Guide / DCA</h3>
+<p class="small" id="investmentGuideText">Allgemeine Bildung: DCA, Marktphasen und Risiko werden neutral erkl&#228;rt. Keine Anlageberatung.</p>
+<div class="grid">
+<div class="stat phase-card" onclick="showInvestmentPhase('bear')"><strong>&#128059; B&#228;renmarkt</strong><br><span class="small">Was bedeutet diese Phase?</span></div>
+<div class="stat phase-card" onclick="showInvestmentPhase('accumulation')"><strong>&#128260; Akkumulation</strong><br><span class="small">Warum sammeln manche langfristig?</span></div>
+<div class="stat phase-card" onclick="showInvestmentPhase('dca')"><strong>&#128176; DCA Beispiel</strong><br><span class="small">1.000 / 10.000 / 100.000 Euro Beispiele.</span></div>
+<div class="stat phase-card" onclick="showInvestmentPhase('bull')"><strong>&#128002; Bullenmarkt</strong><br><span class="small">Chancen und Risiken.</span></div>
+<div class="stat phase-card" onclick="showInvestmentPhase('euphoria')"><strong>&#9888;&#65039; Euphorie</strong><br><span class="small">Warum diese Phase gef&#228;hrlich sein kann.</span></div>
+</div>
+<div id="investmentPhaseExplanation" class="phase-explain">Klicke auf eine Marktphase oder auf DCA, um eine ausf&#252;hrliche, einfache Erkl&#228;rung mit Beispiel zu sehen.</div>
+</div>
+
+
+<div class="card start-cycle-card" id="homeCycleSection">
+<h3 id="homeCycleTitle">&#128200; Marktzyklus Education</h3>
+<p class="small" id="homeCycleText">Klicke auf eine Phase, um einfach zu lernen, was sie bedeutet. Die genaue Marktphase wird zus&#228;tzlich im Coin-Analysebereich berechnet.</p>
+<div class="cycle-row">
+<div class="cycle-phase" onclick="openCyclePhase('capitulation')">&#128557;<br>Kapitulation</div>
+<div class="cycle-phase" onclick="openCyclePhase('bear')">&#128059;<br>B&#228;renmarkt</div>
+<div class="cycle-phase active" onclick="openCyclePhase('accumulation')">&#128205;<br>Akkumulation</div>
+<div class="cycle-phase" onclick="openCyclePhase('earlybull')">&#127793;<br>Fr&#252;he Bullenphase</div>
+<div class="cycle-phase" onclick="openCyclePhase('bull')">&#128002;<br>Bullrun</div>
+<div class="cycle-phase" onclick="openCyclePhase('euphoria')">&#9888;&#65039;<br>Euphorie</div>
+</div>
+<div class="info-box"><strong>So liest du den Zyklus:</strong> Der Markt bewegt sich selten linear. Nach Panikphasen folgt oft eine Seitw&#228;rts-/Akkumulationsphase, dann kann eine fr&#252;he Bullenphase entstehen. Euphorie ist oft die riskanteste Phase. Keine Phase ist garantiert und keine Darstellung ist Anlageberatung.</div>
+<div id="cyclePhaseExplanation" class="cycle-explain-inline cycle-explanation-target"><strong>&#128205; Akkumulation:</strong> In dieser Phase ist der Markt oft ruhig, viele verlieren Interesse und langfristige Marktteilnehmer k&#246;nnten langsam Positionen aufbauen. Klicke oben auf eine Phase f&#252;r mehr Education.</div>
+</div>
+
+
+<div class="card tax-guide-card" id="taxGuideSection">
+<h3 id="taxGuideTitle">&#128221; Steuer-Guide f&#252;r Krypto</h3>
+<p class="small" id="taxGuideIntro">Allgemeine Bildung: Wir leisten keine Steuerberatung. Krypto-Transaktionen sollten sauber dokumentiert werden.</p>
+<div class="grid">
+<div class="stat clickable" onclick="showTaxGuide('why')"><strong>&#128196; Warum dokumentieren?</strong><br><span class="small">Nachweise, Historie und Steuerunterlagen verstehen.</span></div>
+<div class="stat clickable" onclick="showTaxGuide('tools')"><strong>&#128295; Tools: Blockpit & CoinTracking</strong><br><span class="small">Import per API, CSV oder manueller Erfassung.</span></div>
+<div class="stat clickable" onclick="showTaxGuide('regulation')"><strong>&#9878;&#65039; DAC8 / MiCA / Nachweise</strong><br><span class="small">Warum saubere Dokumentation wichtiger wird.</span></div>
+<div class="stat clickable" onclick="showTaxGuide('advisor')"><strong>&#129309; Steuerberater vorbereiten</strong><br><span class="small">Wie man dem Steuerberater Arbeit erleichtert.</span></div>
+</div>
+<div id="taxGuideExplanation" class="tax-explain">
+<strong>&#128204; Hinweis:</strong> Klicke auf einen Bereich. Du bekommst eine einfache Erkl&#228;rung, warum Krypto-Steuerdokumentation wichtig ist und wie Tools wie Blockpit oder CoinTracking helfen k&#246;nnen. Keine Steuerberatung.
+</div>
+<div class="tax-link-row">
+<a href="https://www.blockpit.io" target="_blank" rel="noopener">Blockpit &#246;ffnen</a>
+<a href="https://cointracking.info" target="_blank" rel="noopener">CoinTracking &#246;ffnen</a>
+</div>
 </div>
 
 <div class="card" id="watchlistSection">
@@ -414,6 +943,110 @@ box-sizing: border-box;
 <h3>&#128344; Letzte Analysen</h3>
 <div id="history"></div>
 </div>
+
+
+</div>
+
+<div id="stocksMarketScreen" class="market-screen">
+<div class="card">
+<h2>&#128200; Aktien Analyse</h2>
+<p class="small">Dieser Bereich ist getrennt vom Krypto-Bereich vorbereitet. Live-Kennzahlen werden im n&#228;chsten Schritt angebunden.</p>
+<div class="market-search-row">
+<input id="stocksInput" placeholder="z.B. AAPL, MSFT, NVDA">
+<button onclick="analyzeMarketAsset('stocks')">Aktie analysieren</button>
+</div>
+<div id="stocksOverview" class="grid"></div>
+<div class="performance-toolbar">
+<strong>Top 10 Aktien nach Performance</strong><br>
+<button class="pill" onclick="loadMarketPerformance('stocks','5y')">5 Jahre</button>
+<button class="pill" onclick="loadMarketPerformance('stocks','10y')">10 Jahre</button>
+<button class="pill" onclick="loadMarketPerformance('stocks','20y')">20 Jahre</button>
+<button class="pill" onclick="loadMarketPerformance('stocks','30y')">30 Jahre</button>
+<button class="pill" onclick="loadMarketPerformance('stocks','40y')">40 Jahre</button>
+<button class="pill" onclick="loadMarketPerformance('stocks','50y')">50 Jahre</button>
+<div id="stocksPerformance"></div>
+</div>
+<div id="stocksResult"></div>
+</div>
+</div>
+
+<div id="etfsMarketScreen" class="market-screen">
+<div class="card">
+<h2>&#128202; ETF Analyse</h2>
+<p class="small">ETF-Bereich f&#252;r MSCI World, S&amp;P 500, Nasdaq, Bitcoin-ETFs und Gold-ETFs. Aktuell als Education-/Link-Modul vorbereitet.</p>
+<div class="market-search-row">
+<input id="etfsInput" placeholder="z.B. SPY, QQQ, IWDA, IBIT">
+<button onclick="analyzeMarketAsset('etfs')">ETF analysieren</button>
+</div>
+<div id="etfsOverview" class="grid"></div>
+<div class="performance-toolbar">
+<strong>Top 10 ETFs nach Performance</strong><br>
+<button class="pill" onclick="loadMarketPerformance('etfs','5y')">5 Jahre</button>
+<button class="pill" onclick="loadMarketPerformance('etfs','10y')">10 Jahre</button>
+<button class="pill" onclick="loadMarketPerformance('etfs','20y')">20 Jahre</button>
+<button class="pill" onclick="loadMarketPerformance('etfs','30y')">30 Jahre</button>
+<button class="pill" onclick="loadMarketPerformance('etfs','40y')">40 Jahre</button>
+<button class="pill" onclick="loadMarketPerformance('etfs','50y')">50 Jahre</button>
+<div id="etfsPerformance"></div>
+</div>
+<div id="etfsResult"></div>
+</div>
+</div>
+
+<div id="indicesMarketScreen" class="market-screen">
+<div class="card">
+<h2>&#127757; Indizes</h2>
+<p class="small">Indizes helfen, ganze M&#228;rkte einzuordnen: USA, Deutschland, Japan und globale Risiko-Stimmung.</p>
+<div class="market-search-row">
+<input id="indicesInput" placeholder="z.B. SPX, NDX, DAX">
+<button onclick="analyzeMarketAsset('indices')">Index analysieren</button>
+</div>
+<div id="indicesOverview" class="grid"></div>
+<div class="performance-toolbar">
+<strong>Top 10 Indizes nach Performance</strong><br>
+<button class="pill" onclick="loadMarketPerformance('indices','5y')">5 Jahre</button>
+<button class="pill" onclick="loadMarketPerformance('indices','10y')">10 Jahre</button>
+<button class="pill" onclick="loadMarketPerformance('indices','20y')">20 Jahre</button>
+<button class="pill" onclick="loadMarketPerformance('indices','30y')">30 Jahre</button>
+<button class="pill" onclick="loadMarketPerformance('indices','40y')">40 Jahre</button>
+<button class="pill" onclick="loadMarketPerformance('indices','50y')">50 Jahre</button>
+<div id="indicesPerformance"></div>
+</div>
+<div id="indicesResult"></div>
+</div>
+</div>
+
+<div id="metalsMarketScreen" class="market-screen">
+<div class="card">
+<h2>&#129351; Edelmetalle</h2>
+<p class="small">Gold, Silber, Platin und Palladium als Makro-/Absicherungsbereich. Preise und Live-Daten werden sp&#228;ter angebunden.</p>
+<div class="market-search-row">
+<input id="metalsInput" placeholder="z.B. XAUUSD, XAGUSD">
+<button onclick="analyzeMarketAsset('metals')">Edelmetall analysieren</button>
+</div>
+<div id="metalsOverview" class="grid"></div>
+<div class="performance-toolbar">
+<strong>Top 10 Edelmetalle/Metall-ETFs nach Performance</strong><br>
+<button class="pill" onclick="loadMarketPerformance('metals','5y')">5 Jahre</button>
+<button class="pill" onclick="loadMarketPerformance('metals','10y')">10 Jahre</button>
+<button class="pill" onclick="loadMarketPerformance('metals','20y')">20 Jahre</button>
+<button class="pill" onclick="loadMarketPerformance('metals','30y')">30 Jahre</button>
+<button class="pill" onclick="loadMarketPerformance('metals','40y')">40 Jahre</button>
+<button class="pill" onclick="loadMarketPerformance('metals','50y')">50 Jahre</button>
+<div id="metalsPerformance"></div>
+</div>
+<div id="metalsResult"></div>
+</div>
+</div>
+
+<div class="legal-footer card">
+<strong>&#9888;&#65039; Rechtlicher Hinweis:</strong> Alle Inhalte dienen ausschlie&#223;lich Informations- und Bildungszwecken. Keine Anlageberatung, keine Finanzberatung, keine Steuerberatung und keine Aufforderung zum Kauf oder Verkauf. Krypto-Trading ist mit hohen Risiken bis hin zum Totalverlust verbunden.
+<br>
+<a href="#" onclick="openLegal('impressum'); return false;">Impressum</a>
+<a href="#" onclick="openLegal('datenschutz'); return false;">Datenschutz</a>
+<a href="#" onclick="openLegal('disclaimer'); return false;">Disclaimer</a>
+</div>
+
 </div>
 
 <div id="infoModal" class="modal">
@@ -443,15 +1076,211 @@ let currentScreen = 0;
 let touchStartX = 0;
 let lexiconHistory = [];
 let chartMode = "long";
+let multiMarketLoaded = false;
+
+function switchMarketArea(type) {
+document.querySelectorAll(".market-screen").forEach(function (screen) {
+screen.classList.remove("active");
+});
+
+document.querySelectorAll(".market-tab").forEach(function (tab) {
+tab.classList.remove("active");
+});
+
+const target = document.getElementById(type + "MarketScreen");
+if (target) target.classList.add("active");
+
+const buttons = document.querySelectorAll(".market-tab");
+const order = ["crypto", "stocks", "etfs", "indices", "metals"];
+const index = order.indexOf(type);
+if (buttons[index]) buttons[index].classList.add("active");
+
+if (type !== "crypto" && !multiMarketLoaded) {
+loadMultiMarketOverview();
+}
+
+window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+async function loadMultiMarketOverview() {
+multiMarketLoaded = true;
+
+try {
+const res = await fetch("/api/multi-market-overview", {
+headers: { "x-app-password": getPassword() }
+});
+
+const data = await res.json();
+
+renderMarketOverviewGroup("stocks", data.stocks || []);
+renderMarketOverviewGroup("etfs", data.etfs || []);
+renderMarketOverviewGroup("indices", data.indices || []);
+renderMarketOverviewGroup("metals", data.metals || []);
+loadMarketPerformance("stocks", "5y");
+loadMarketPerformance("etfs", "5y");
+loadMarketPerformance("indices", "5y");
+loadMarketPerformance("metals", "5y");
+} catch (e) {
+["stocks", "etfs", "indices", "metals"].forEach(function (type) {
+const box = document.getElementById(type + "Overview");
+if (box) box.innerHTML = '<p class="small">Daten aktuell nicht verf&#252;gbar.</p>';
+});
+}
+}
+
+function renderMarketOverviewGroup(type, items) {
+const box = document.getElementById(type + "Overview");
+if (!box) return;
+
+if (!items.length) {
+box.innerHTML = '<p class="small">Noch keine Daten vorhanden.</p>';
+return;
+}
+
+box.innerHTML = items.map(function (item) {
+const sub = item.sector || item.focus || item.region || item.unit || item.category || "";
+const live = typeof item.livePrice === "number";
+const change = typeof item.liveChangePct === "number" ? item.liveChangePct : null;
+const cls = change === null ? "" : (change >= 0 ? "positive" : "negative");
+const priceText = live ? money(item.livePrice) + " " + (item.currency || "") : "Live-Daten werden geladen";
+const changeText = change === null ? "Fallback" : (change >= 0 ? "+" : "") + change.toFixed(2) + "%";
+
+return `
+<div class="stat clickable market-asset-card" onclick="selectMarketAsset('${type}', '${item.symbol}')">
+<strong>${item.symbol}</strong><br>
+${item.name}<br>
+<span class="small">${sub}</span>
+<div class="asset-live-row">
+<span>${priceText}</span>
+<span class="${cls}">${changeText}</span>
+</div>
+<a href="${item.link}" target="_blank" rel="noopener" onclick="event.stopPropagation()">TradingView Ã¶ffnen</a>
+</div>
+`;
+}).join("");
+}
+
+function selectMarketAsset(type, symbol) {
+const input = document.getElementById(type + "Input");
+if (input) input.value = symbol;
+analyzeMarketAsset(type);
+}
+
+async function analyzeMarketAsset(type) {
+const input = document.getElementById(type + "Input");
+const result = document.getElementById(type + "Result");
+
+if (!result) return;
+
+const symbol = input && input.value ? input.value : "";
+result.innerHTML = '<div class="loading">Live-Daten und Chart werden geladen...</div>';
+
+try {
+const res = await fetch("/api/market-asset", {
+method: "POST",
+headers: {
+"Content-Type": "application/json",
+"x-app-password": getPassword()
+},
+body: JSON.stringify({ type: type, symbol: symbol, range: "5y" })
+});
+
+const data = await res.json();
+const quote = data.quote || {};
+const hasQuote = typeof quote.price === "number";
+const change = typeof quote.changePct === "number" ? quote.changePct : null;
+const changeCls = change === null ? "" : (change >= 0 ? "positive" : "negative");
+
+result.innerHTML = `
+<div class="info-box">
+<h3>${data.title}: ${data.name} (${data.symbol})</h3>
+<div class="grid">
+<div class="stat">Aktueller Preis<br>${hasQuote ? money(quote.price) + " " + (quote.currency || "") : "nicht verfÃ¼gbar"}</div>
+<div class="stat">VerÃ¤nderung<br><span class="${changeCls}">${change === null ? "nicht verfÃ¼gbar" : (change >= 0 ? "+" : "") + change.toFixed(2) + "%"}</span></div>
+<div class="stat">Status<br>${data.status === "live" ? "Live-Daten geladen" : "Fallback / Basisdaten"}</div>
+</div>
+<p>${data.education}</p>
+<p class="small">${data.note}</p>
+<a href="${data.link}" target="_blank" rel="noopener">Chart bei TradingView Ã¶ffnen</a>
+<div class="market-chart-wrap"><canvas id="${type}AssetChart" class="market-chart-canvas"></canvas></div>
+</div>
+`;
+
+drawMarketAssetChart(type, data.chart);
+} catch (e) {
+result.innerHTML = '<p class="danger">Analyse aktuell nicht verfÃ¼gbar.</p>';
+}
+}
+
+function drawMarketAssetChart(type, chartData) {
+const canvas = document.getElementById(type + "AssetChart");
+if (!canvas || !chartData || !chartData.prices || !chartData.prices.length) return;
+
+const labels = chartData.prices.map(function (p) { return new Date(p[0]).toLocaleDateString("de-DE"); });
+const values = chartData.prices.map(function (p) { return p[1]; });
+
+new Chart(canvas, {
+type: "line",
+data: {
+labels: labels,
+datasets: [{
+label: chartData.name || chartData.symbol || "Chart",
+data: values,
+borderColor: "#00ff99",
+backgroundColor: "rgba(0,255,153,0.08)",
+fill: true,
+tension: 0.25,
+pointRadius: 0
+}]
+},
+options: {
+plugins: { legend: { display: false } },
+scales: { x: { ticks: { color: "white", maxTicksLimit: 8 } }, y: { ticks: { color: "white" } } }
+}
+});
+}
+
+async function loadMarketPerformance(type, period) {
+const box = document.getElementById(type + "Performance");
+if (!box) return;
+box.innerHTML = '<div class="loading">Top 10 Performance wird geladen...</div>';
+
+try {
+const res = await fetch("/api/market-performance?type=" + encodeURIComponent(type) + "&period=" + encodeURIComponent(period), {
+headers: { "x-app-password": getPassword() }
+});
+const data = await res.json();
+const items = data.items || [];
+
+if (!items.length) {
+box.innerHTML = '<p class="small">Performance-Daten aktuell nicht erreichbar.</p>';
+return;
+}
+
+box.innerHTML = '<div class="grid">' + items.map(function (item, index) {
+const cls = item.performancePct >= 0 ? "positive" : "negative";
+return `
+<div class="stat clickable" onclick="document.getElementById('${type}Input').value='${item.symbol}'; analyzeMarketAsset('${type}')">
+<strong>#${index + 1} ${item.symbol}</strong><br>
+${item.name || item.symbol}<br>
+<span class="${cls}">${item.performancePct >= 0 ? "+" : ""}${item.performancePct.toFixed(2)}%</span><br>
+<span class="small">Zeitraum: ${period}</span>
+</div>
+`;
+}).join("") + '</div>';
+} catch (e) {
+box.innerHTML = '<p class="danger">Performance-Daten aktuell nicht verfÃ¼gbar.</p>';
+}
+}
+
+function getLang() {
+return localStorage.getItem("coinpilot_lang") || "DE";
+}
+
 
 function getPassword() {
 return localStorage.getItem("coinpilot_password") || "";
 }
-document.getElementById("passwordInput").addEventListener("keydown", function(e) {
-  if (e.key === "Enter") {
-    login();
-  }
-});
 
 function login() {
 const password = document.getElementById("passwordInput").value;
@@ -701,7 +1530,8 @@ headers: {
 },
 body: JSON.stringify({
 coin: coinInput,
-timeframe: selectedTimeframe
+timeframe: selectedTimeframe,
+lang: getLang()
 })
 });
 
@@ -777,11 +1607,18 @@ ${data.coin} (${data.symbol.toUpperCase()})
 <button class="tab" onclick="showScreen(4)">Profit</button>
 <button class="tab" onclick="showScreen(5)">Technik</button>
 <button class="tab" onclick="showScreen(6)">AI</button>
+<button class="tab" onclick="showScreen(7)">Projekt</button>
+<button class="tab" onclick="showScreen(8)">Tokenomics</button>
+<button class="tab" onclick="showScreen(9)">Scam Check</button>
+<button class="tab" onclick="showScreen(10)">Zyklus</button>
 </div>
 
 <div class="screen active">
-<h3>&#128200; Chart (${data.timeframeLabel})</h3>
+<h3>&#128200; Chart (${data.timeframeLabel})</h3><div class="compact-control-title">Timeframes</div>
 
+<div class="control-panel">
+<h4>Timeframes</h4>
+<div class="control-row">
 ${timeframeButton("5m", "5m")}
 ${timeframeButton("15m", "15m")}
 ${timeframeButton("1h", "1h")}
@@ -790,14 +1627,20 @@ ${timeframeButton("1", "1D")}
 ${timeframeButton("7", "7D")}
 ${timeframeButton("30", "30D")}
 ${timeframeButton("365", "1Y")}
+</div>
+</div>
 
-<h3>Chart-Anzeige</h3>
-${chartModeButton("long", "&#128994; Nur Long")}
-${chartModeButton("short", "&#128308; Nur Short")}
+<div class="control-panel">
+<h4>Chart-Anzeige</h4>
+<div class="control-row">
+${chartModeButton("long", "&#128994; Long")}
+${chartModeButton("short", "&#128308; Short")}
 ${chartModeButton("both", "&#9898; Beide")}
+</div>
+</div>
 
 <div class="info-box" style="margin-bottom:10px;">
-  <strong>📊 Chart:</strong> 🟢 Preis | 🔵 Entry | 🔴 SL | 🟡 TP1 | 🟠 TP2 | 🟣 TP3
+<strong>&#128202; Chart:</strong> &#128994; Preis | &#128309; Entry | &#128308; SL | &#128993; TP1 | &#128992; TP2 | &#128995; TP3
 </div>
 
 <canvas id="chart"></canvas>
@@ -845,11 +1688,16 @@ M&#246;gliche Ziele: $${money(levels.shortTP1)}, $${money(levels.shortTP2)}, $${
 <div class="signal ${signalClass}">
 ${data.marketScore.signalEmoji} Smart Signal: ${data.marketScore.signal}
 <br>
-Score: ${data.marketScore.score}/100 &#8211; ${data.marketScore.label}
+<span class="score-click" onclick="openMarketScoreInfo(lastData)">Score: ${data.marketScore.score}/100 &#8211; ${data.marketScore.label}</span>
+</div>
+
+<div class="info-box">
+<h3>&#129504; Score-Erkl&#228;rung</h3>
+<p>${buildScoreExplanation(data)}</p>
 </div>
 
 <div class="grid">
-<div class="stat">&#9888;&#65039; Risiko<br>${data.riskLevel.emoji} ${data.riskLevel.label}<div class="hint">Nach Market Cap eingestuft.</div></div>
+<div class="stat clickable" onclick="openInfo('riskScore')">&#9888;&#65039; Risiko<br>${data.riskLevel.emoji} ${data.riskLevel.label}<div class="hint">Nach Market Cap eingestuft. Klicken f&#252;r Erkl&#228;rung.</div></div>
 <div class="stat">&#9889; Momentum<br>${data.momentum}</div>
 <div class="stat">&#128552; Fear & Greed<br>${data.fearGreed}<div class="bar-wrap"><div class="bar" style="width:${data.fearGreedValue}%"></div></div></div>
 <div class="stat">&#129504; Warum dieses Signal?<br>${buildWhySignal(data)}</div>
@@ -867,7 +1715,7 @@ Score: ${data.marketScore.score}/100 &#8211; ${data.marketScore.label}
 <div class="grid">
 <div class="stat">&#128176; Preis<br>$${money(data.price)}</div>
 <div class="stat">&#128202; Market Cap<br>$${bigNumber(data.marketCap)}<div class="hint">Market Cap = Preis &#215; umlaufende Coins.</div></div>
-<div class="stat">&#128181; Volumen 24h<br>$${bigNumber(data.volume24h)}</div>
+<div class="stat clickable" onclick="openInfo('coinVolume')">&#128181; Volumen 24h<br>$${bigNumber(data.volume24h)}<div class="hint">Klicken f&#252;r Erkl&#228;rung.</div></div>
 <div class="stat">&#128200; 24h<br>${Number(data.change24h).toFixed(2)}%</div>
 <div class="stat">&#9851;&#65039; Supply<br>${bigNumber(data.circulating)}</div>
 <div class="stat">&#127937; Max Supply<br>${bigNumber(data.maxSupply)}</div>
@@ -952,6 +1800,26 @@ ${data.aiErrorMessage ? '<p class="danger">AI Hinweis: ' + data.aiErrorMessage +
 <p class="small">Hinweis: Keine Anlageberatung. Die Werte sind technische Orientierungszonen und k&#246;nnen falsch sein.</p>
 </div>
 
+<div class="screen">
+<h3>&#129534; Projekt&#252;bersicht</h3>
+${buildProjectBox(data)}
+</div>
+
+<div class="screen">
+<h3>&#129518; Tokenomics</h3>
+${buildTokenomicsBox(data)}
+</div>
+
+<div class="screen">
+<h3>&#128737;&#65039; Scam / Risiko Analyzer</h3>
+${buildScamBox(data)}
+</div>
+
+<div class="screen">
+<h3>&#128200; Marktzyklus</h3>
+${buildCycleBox(data)}
+</div>
+
 </div>
 `;
 
@@ -959,6 +1827,416 @@ currentScreen = 0;
 setupSwipe();
 drawChart(data.chartData, data);
 renderProfitSimulation();
+}
+
+
+function buildProjectBox(data) {
+const info = data.projectInfo || {};
+const categories = info.categories && info.categories.length ? info.categories.slice(0, 8) : [];
+const categoryPills = categories.length ? categories.map(function(c) { return '<span class="pill" style="display:inline-block;margin:3px;">' + c + '</span>'; }).join('') : 'Nicht verf&#252;gbar';
+const walletLinks = [ { name: 'Ledger', url: 'https://www.ledger.com' }, { name: 'Trezor', url: 'https://trezor.io' }, { name: 'MetaMask', url: 'https://metamask.io' }, { name: 'Trust Wallet', url: 'https://trustwallet.com' } ].map(function(w) { return '<a class="pill" style="display:inline-block;margin:3px;" href="' + w.url + '" target="_blank">' + w.name + '</a>'; }).join('');
+const website = info.homepage ? '<a href="' + info.homepage + '" target="_blank">Offizielle Website</a>' : '<span class="small">Keine Website verf&#252;gbar</span>';
+const twitter = info.twitter ? '<a href="' + info.twitter + '" target="_blank">X / Twitter</a>' : '<span class="small">X nicht verf&#252;gbar</span>';
+const telegram = info.telegram ? '<a href="' + info.telegram + '" target="_blank">Telegram</a>' : '<span class="small">Telegram nicht verf&#252;gbar</span>';
+const reddit = info.reddit ? '<a href="' + info.reddit + '" target="_blank">Reddit</a>' : '<span class="small">Reddit nicht verf&#252;gbar</span>';
+const coingecko = info.coinGeckoUrl ? '<a href="' + info.coinGeckoUrl + '" target="_blank">CoinGecko</a>' : '';
+const cmc = info.coinMarketCapUrl ? '<a href="' + info.coinMarketCapUrl + '" target="_blank">CoinMarketCap Suche</a>' : '';
+const blockchains = info.blockchainSites && info.blockchainSites.length ? info.blockchainSites.map(function(url) { return '<a href="' + url + '" target="_blank">Explorer</a>'; }).join(' | ') : '<span class="small">Keine Explorer-Links verf&#252;gbar</span>';
+const desc = getLang() === 'EN' ? (info.description || 'Project description currently unavailable.') : (info.descriptionDe || 'Projektbeschreibung aktuell nicht verf&#252;gbar.');
+return `
+<div class="info-box">
+<h3>&#129534; Projekt&#252;bersicht</h3>
+<p class="small">Diese &#220;bersicht kombiniert Projektlinks, Kategorien, Explorer und Wallet-Hinweise. Bitte immer zus&#228;tzlich die offiziellen Quellen pr&#252;fen.</p>
+<div class="grid">
+<div class="stat"><strong style="color:#00e5ff;">&#127991;&#65039; Branche / Kategorien</strong><br>${categoryPills}<div class="hint">Hilft bei der Einordnung: Layer 1, DeFi, AI, Gaming, Meme, Infrastruktur usw.</div></div>
+<div class="stat"><strong style="color:#00e5ff;">&#127760; Offizielle Quellen</strong><br>${website}<br>${twitter}<br>${telegram}<br>${reddit}<br>${coingecko} ${cmc}<div class="hint">Pr&#252;fe Website, Docs, Socials, Community und unabh&#228;ngige Datenquellen.</div></div>
+<div class="stat"><strong style="color:#00e5ff;">&#128188; Wallets</strong><br>${walletLinks}<div class="hint">Vor dem Senden immer Netzwerk, Adresse und Contract pr&#252;fen.</div></div>
+<div class="stat"><strong style="color:#00e5ff;">&#128197; Startdatum</strong><br>${info.genesisDate || "Nicht verf&#252;gbar"}<div class="hint">Historie hilft bei der Einordnung, ist aber kein Sicherheitsbeweis.</div></div>
+<div class="stat"><strong style="color:#00e5ff;">&#128269; Explorer</strong><br>${blockchains}<div class="hint">Explorer zeigen On-Chain-Daten, Transfers und Contract-Informationen.</div></div>
+<div class="stat"><strong style="color:#00e5ff;">&#9881;&#65039; Algorithmus / Technik</strong><br>${info.hashingAlgorithm || "Nicht verf&#252;gbar"}<div class="hint">Nicht jedes Projekt nutzt einen klassischen Mining-Algorithmus.</div></div>
+</div>
+<h3>&#128214; Kurzbeschreibung</h3>
+<p>${desc}</p>
+</div>
+`;
+}
+
+function buildTokenomicsBox(data) {
+const t = data.tokenomics || {};
+const supplyProgress = t.supplyProgress || "Nicht verfÃ¼gbar";
+const fdvRatio = t.fdvRatio || "Nicht verfÃ¼gbar";
+const notes = t.notes && t.notes.length ? t.notes : ["Tokenomics-Daten aktuell nur teilweise verfÃ¼gbar. Bitte offizielle Quellen prÃ¼fen."];
+const coinGeckoUrl = "https://www.coingecko.com/en/coins/" + data.coinId;
+
+return `
+<div class="info-box tokenomics-hero">
+<h3>&#129518; Tokenomics einfach erklÃ¤rt</h3>
+<p>Tokenomics beschreibt, wie ein Coin oder Token wirtschaftlich aufgebaut ist: Umlaufmenge, maximale Menge, Inflation, VerwÃ¤sserung, Handelsvolumen und Verteilung. Gute Tokenomics machen ein Projekt nicht automatisch sicher, aber schlechte Tokenomics kÃ¶nnen ein starkes Warnsignal sein.</p>
+<div class="grid">
+<div class="stat"><strong style="color:#00e5ff;">Preis</strong><br>$${money(t.currentPrice || data.price)}<div class="hint">Aktueller Marktpreis laut Datenquelle.</div></div>
+<div class="stat"><strong style="color:#00e5ff;">Market Cap</strong><br>$${bigNumber(t.marketCap || data.marketCap)}<div class="hint">Preis Ã� umlaufende Menge.</div></div>
+<div class="stat"><strong style="color:#00e5ff;">FDV</strong><br>$${bigNumber(t.fdv || 0)}<div class="hint">Fully Diluted Valuation: Bewertung, wenn alle Tokens im Umlauf wÃ¤ren.</div></div>
+<div class="stat"><strong style="color:#00e5ff;">FDV / Market Cap</strong><br>${fdvRatio}<div class="hint">Hoher Wert kann auf spÃ¤tere VerwÃ¤sserung hinweisen.</div></div>
+<div class="stat"><strong style="color:#00e5ff;">Circulating Supply</strong><br>${bigNumber(t.circulatingSupply || data.circulating)}<div class="hint">Menge, die aktuell im Umlauf ist.</div></div>
+<div class="stat"><strong style="color:#00e5ff;">Total Supply</strong><br>${bigNumber(t.totalSupply || 0)}<div class="hint">Gesamtmenge, soweit verfÃ¼gbar.</div></div>
+<div class="stat"><strong style="color:#00e5ff;">Max Supply</strong><br>${bigNumber(t.maxSupply || data.maxSupply)}<div class="hint">Maximal mÃ¶gliche Menge, falls definiert.</div></div>
+<div class="stat"><strong style="color:#00e5ff;">Supply im Umlauf</strong><br>${supplyProgress}<div class="hint">Zeigt, wie viel der Max Supply bereits zirkuliert.</div></div>
+</div>
+<h3>&#128269; CoinPilot Tokenomics EinschÃ¤tzung</h3>
+${notes.map(function(note){ return '<div class="tokenomics-note">' + note + '</div>'; }).join('')}
+<p class="small">Wichtig: FÃ¼r echte Pro-Tokenomics brauchen wir spÃ¤ter Unlock-Kalender, Team-Anteile, Vesting, Holder-Verteilung und Treasury-Daten. Diese Ansicht ist ein starker Start, aber keine Garantie und keine Anlageberatung.</p>
+<p><a href="${coinGeckoUrl}" target="_blank">Tokenomics auf CoinGecko prÃ¼fen</a></p>
+</div>
+`;
+}
+
+function buildScamBox(data) {
+const scam = data.scamAnalyzer;
+if (!scam) {
+return '<div class="info-box"><p class="small">Scam Analyzer aktuell nicht verf&#252;gbar.</p></div>';
+}
+
+const checks = (scam.checks || []).map(function (check, index) {
+const cls = check.status === "ok" ? "ok" : check.status === "warning" ? "warning" : "neutral";
+const value = check.value ? '<div class="scam-check-value">' + check.value + '</div>' : '';
+return '<div class="scam-check-card ' + cls + '" onclick="openScamInfo(' + index + ')">' +
+'<div class="scam-check-title">' + check.label + '</div>' +
+value +
+'<div class="scam-check-detail">' + check.detail + '</div>' +
+'<div class="hint">Klicken f&#252;r Bedeutung.</div>' +
+'</div>';
+}).join("");
+
+window.currentScamChecks = scam.checks || [];
+
+return `
+<div class="info-box">
+<div class="scam-pro-layout">
+<div class="scam-score-panel">
+<h3>${scam.label}</h3>
+<div class="score-click" onclick="openScamScoreInfo()">Score ${scam.score}/100</div>
+<div class="bar-wrap"><div class="bar" style="width:${scam.score}%"></div></div>
+<p>${buildScamScoreText(scam.score)}</p>
+<p class="small">Scam Score bewertet Projekt-/Datenrisiken. Marktzyklus Score bewertet Marktphase. Das sind zwei verschiedene Systeme.</p>
+${scam.website ? '<p><a href="' + scam.website + '" target="_blank">Offizielle Website prÃ¼fen</a></p>' : ''}
+</div>
+<div>
+<h3>&#128269; PrÃ¼fbereiche</h3>
+<p class="small">Klicke auf einen Check, um Bedeutung, Interpretation und mÃ¶gliche PrÃ¼fquelle zu sehen.</p>
+<div class="scam-list">${checks}</div>
+</div>
+</div>
+<p class="small">${scam.disclaimer || "Risikofilter, keine Garantie und keine Anlageberatung."}</p>
+</div>
+`;
+}
+
+function buildCycleBox(data) {
+const cycle = data.cycle;
+if (!cycle) {
+return '<div class="info-box"><p class="small">Marktzyklus aktuell nicht verf&#252;gbar.</p></div>';
+}
+
+const phases = ["Kapitulation", "B&#228;renmarkt", "Akkumulation", "Fr&#252;he Bullenphase", "Bullrun", "Euphorie"];
+const keys = ["capitulation", "bear", "accumulation", "earlybull", "bull", "euphoria"];
+const marker = Number(cycle.marker || 0);
+
+const timeline = phases.map(function (phase, index) {
+return '<div class="cycle-phase ' + (index === marker ? 'active' : '') + '" onclick="openCyclePhase(\'' + keys[index] + '\')">' + (index === marker ? '&#128205; ' : '') + phase + '</div>';
+}).join("");
+
+return `
+<div class="info-box">
+<strong>${cycle.phase}</strong><br>
+<span class="score-click" onclick="openCycleScoreInfo()">Cycle Score: ${cycle.score}/100</span><br>
+${cycle.athDrop ? 'Abstand zum All-Time-High: ' + cycle.athDrop + '%<br>' : ''}
+<div class="cycle-row">${timeline}</div>
+<p>${cycle.text}</p>
+<p class="small">Der Score kombiniert Trend, RSI, Fear & Greed, Marktbewegung und Abstand zum Hoch. Klicke auf eine Phase f&#252;r die einfache Erkl&#228;rung.</p>
+<div id="cyclePhaseExplanation" class="cycle-explain-inline cycle-explanation-target"><strong>&#128205; Marktphase:</strong> Klicke oben auf eine Phase, um die Education-Erkl&#228;rung direkt hier zu sehen.</div>
+</div>
+`;
+}
+
+function openCycleScoreInfo() {
+document.getElementById("infoTitle").innerHTML = "Cycle Score erkl&#228;rt";
+document.getElementById("infoBody").innerHTML = "<p>Der Cycle Score bewertet nicht das Projekt, sondern die Marktphase. Er kombiniert Trendstruktur, EMA-Lage, RSI, Fear & Greed, Marktbewegung und Abstand zum All-Time-High.</p><p>Ein hoher Wert kann auf eine starke Marktphase hinweisen. Ein niedriger Wert kann auf B&#228;renmarkt, Kapitulation oder starke Unsicherheit hinweisen. Der Score ist eine Orientierung, keine Prognose und keine Anlageberatung.</p>";
+document.getElementById("infoModal").style.display = "block";
+}
+
+function buildScoreExplanation(data) {
+return "Der Score startet neutral bei 50 Punkten. Positive Faktoren wie Kurs &#252;ber EMA20/50/200, positives 24h-Momentum, RSI-Struktur und konstruktive Marktstimmung k&#246;nnen Punkte addieren. Negative Faktoren wie schwaches Momentum, Kurs unter wichtigen EMAs, hohe Angst oder &#220;berhitzung k&#246;nnen Punkte abziehen. 65/100 bedeutet: leicht positiv bis neutral, aber noch kein eindeutiges Hochkonfidenz-Signal.";
+}
+
+function buildScamScoreText(score) {
+if (score >= 80) return "Der Risikofilter wirkt aktuell eher unauff&#228;llig. Das bedeutet nicht sicher, sondern nur: Die verf&#252;gbaren Daten zeigen weniger Warnsignale.";
+if (score >= 60) return "Es gibt gemischte Signale. Eigene Recherche, Website, Team, Tokenomics und Liquidit&#228;t sollten genauer gepr&#252;ft werden.";
+return "Der Risikofilter zeigt mehrere Warnsignale. Das Projekt sollte besonders vorsichtig gepr&#252;ft werden.";
+}
+
+function openScamInfo(index) {
+const checks = window.currentScamChecks || [];
+const check = checks[index];
+if (!check) return;
+const link = check.url ? '<p><a href="' + check.url + '" target="_blank">Quelle / PrÃ¼fmÃ¶glichkeit Ã¶ffnen</a></p>' : '';
+document.getElementById("infoTitle").innerHTML = check.label;
+document.getElementById("infoBody").innerHTML =
+'<p><strong>Wert:</strong> ' + (check.value || 'nicht verfÃ¼gbar') + '</p>' +
+'<p><strong>Was bedeutet das?</strong><br>' + (check.meaning || check.detail) + '</p>' +
+'<p><strong>CoinPilot EinschÃ¤tzung:</strong><br>' + check.detail + '</p>' +
+link +
+'<p class="small">Dieser Punkt ist ein Risikohinweis und keine Garantie. Immer eigene Recherche durchfÃ¼hren.</p>';
+document.getElementById("infoModal").style.display = "block";
+}
+
+function openScamScoreInfo() {
+document.getElementById("infoTitle").innerHTML = "Scam Score erklÃ¤rt";
+document.getElementById("infoBody").innerHTML =
+'<p>Der Scam Score startet bei 100 und zieht Punkte ab, wenn Warnsignale auftauchen. Beispiele: fehlende Website, wenig Volumen, unklare Supply-Daten, fehlende Socials, keine Explorer-Links oder nicht geprÃ¼fte Team-/Audit-Daten.</p>' +
+'<p><strong>Wichtig:</strong> Ein hoher Score bedeutet nicht sicher. Ein niedriger Score bedeutet nicht automatisch Scam. Es ist ein Recherche-Filter.</p>' +
+'<p>Marktzyklus Score und Scam Score sind bewusst getrennt: Der Marktzyklus bewertet die Marktphase, der Scam Score bewertet Projektrisiken.</p>';
+document.getElementById("infoModal").style.display = "block";
+}
+
+
+
+function showTaxGuide(type) {
+const box = document.getElementById("taxGuideExplanation");
+if (!box) return;
+const content = {
+why: "<h3>&#128196; Warum Krypto-Steuern dokumentieren?</h3><p>&#128221; Krypto-Transaktionen k&#246;nnen steuerlich relevant sein. Dazu k&#246;nnen K&#228;ufe, Verk&#228;ufe, Swaps, Staking, Rewards, Airdrops, DeFi, NFTs oder Transfers zwischen Wallets geh&#246;ren.</p><p>&#128269; Wichtig ist eine saubere Historie: Wann wurde gekauft? Zu welchem Preis? Wann wurde verkauft oder getauscht? Welche Geb&#252;hren sind entstanden? Auf welcher Wallet oder B&#246;rse fand die Transaktion statt?</p><p>&#129309; Ein Steuerberater kann deutlich besser arbeiten, wenn die Daten sauber exportiert und nachvollziehbar vorbereitet sind. Dieses Tool gibt nur allgemeine Bildung und keine Steuerberatung.</p>",
+tools: "<h3>&#128295; Blockpit & CoinTracking</h3><p>&#128295; Tools wie <strong>Blockpit</strong> und <strong>CoinTracking</strong> k&#246;nnen dabei helfen, Transaktionen aus B&#246;rsen und Wallets zu importieren, zu kategorisieren und Berichte vorzubereiten.</p><p>&#128279; M&#246;gliche Importwege: API-Verbindung zur B&#246;rse, CSV-Datei, manuelle Eingabe oder Wallet-Import. Welche Methode passt, h&#228;ngt von B&#246;rse, Wallet und Datenqualit&#228;t ab.</p><p>&#128204; Sp&#228;ter k&#246;nnen hier Affiliate-/Partnerlinks eingef&#252;gt werden. Wichtig: Transparenz und rechtliche Pr&#252;fung vor Launch.</p>",
+regulation: "<h3>&#9878;&#65039; DAC8 / MiCA / Nachweise</h3><p>&#9878;&#65039; Der regulatorische Druck im Kryptobereich nimmt zu. Themen wie Nachweispflichten, Transaktionshistorie, Herkunft von Coins und saubere Dokumentation werden f&#252;r viele Nutzer wichtiger.</p><p>&#128272; Gerade bei vielen Wallets, B&#246;rsen, Swaps oder DeFi-Aktionen kann es schwierig werden, sp&#228;ter alles sauber nachzuvollziehen. Deshalb kann fr&#252;he Dokumentation viel Stress vermeiden.</p><p>&#9888;&#65039; Keine Rechts- oder Steuerberatung: Bitte konkrete Pflichten immer mit Steuerberater oder fachkundiger Stelle kl&#228;ren.</p>",
+advisor: "<h3>&#129309; Vorbereitung f&#252;r den Steuerberater</h3><p>&#129309; Ein Steuerberater freut sich meist &#252;ber strukturierte Daten statt Screenshots, Chatverl&#228;ufe oder unvollst&#228;ndige Tabellen. Gute Vorbereitung spart Zeit und reduziert R&#252;ckfragen.</p><p>&#9989; Hilfreich k&#246;nnen sein: vollst&#228;ndige Transaktionshistorie, Wallet-Adressen, B&#246;rsenexporte, Geb&#252;hren, Staking-/Reward-Daten, Jahresberichte und klare Zuordnung der Konten.</p><p>&#128204; CoinPilot kann hier als Education-Hinweis dienen und auf Tools verlinken. Die eigentliche steuerliche Bewertung muss durch Nutzer und fachkundige Beratung erfolgen.</p>"
+};
+box.innerHTML = content[type] || content.why;
+}
+
+function showInvestmentPhase(type) {
+const box = document.getElementById("investmentPhaseExplanation");
+if (!box) return;
+const content = {
+bear: "<h3>&#128059; B&#228;renmarkt einfach erkl&#228;rt</h3><p>&#128201; Ein B&#228;renmarkt ist eine l&#228;ngere Phase, in der Kurse fallen, Vertrauen sinkt und viele Marktteilnehmer vorsichtig werden. In Krypto kann das sehr schnell und stark passieren.</p><p>&#129504; Typisch sind: schlechte Stimmung, weniger Hype, geringeres Handelsvolumen, viele negative Nachrichten und starke Erholungen, die trotzdem wieder abverkauft werden.</p><p>&#128204; Wichtig: Ein B&#228;renmarkt ist nicht automatisch schlecht. F&#252;r Bildung, Beobachtung, Risikomanagement und langfristige Planung kann er sehr wertvoll sein. Niemand erkennt den Tiefpunkt perfekt.</p><p>&#9888;&#65039; Keine Anlageberatung: Ob und wann eine Strategie sinnvoll ist, h&#228;ngt immer von Risiko, Zeithorizont und eigener Situation ab.</p>",
+accumulation: "<h3>&#128260; Akkumulation & DCA</h3><p>&#128260; Akkumulation bedeutet: Der Markt f&#228;llt nicht mehr stark, bewegt sich oft seitw&#228;rts und viele verlieren das Interesse. Gleichzeitig k&#246;nnten langfristige Marktteilnehmer langsam wieder Positionen aufbauen.</p><p><strong>DCA = Dollar Cost Averaging</strong>: Man investiert nicht alles auf einmal, sondern in festen Abst&#228;nden kleinere Betr&#228;ge. Beispiel: w&#246;chentlich oder monatlich ein fester Betrag.</p><p>&#9989; Vorteil: Man reduziert den Stress, den perfekten Einstieg finden zu m&#252;ssen. Der Durchschnittspreis gl&#228;ttet sich &#252;ber Zeit.</p><p>&#9888;&#65039; Nachteil: DCA sch&#252;tzt nicht vor Verlusten. Wenn ein Projekt schlecht ist, kann man auch mit DCA Geld verlieren. Deshalb bleiben Projektqualit&#228;t, Diversifikation und Risiko wichtig.</p>",
+bull: "<h3>&#128002; Bullenmarkt einfach erkl&#228;rt</h3><p>&#128200; Ein Bullenmarkt ist eine Phase, in der Kurse &#252;ber l&#228;ngere Zeit steigen, Medieninteresse zunimmt und viele Coins stark performen.</p><p>&#128293; Typisch sind: positive Stimmung, steigendes Volumen, neue Marktteilnehmer, starke Trends und h&#228;ufige Breakouts.</p><p>&#9888;&#65039; Risiko: Je sp&#228;ter die Phase, desto h&#246;her wird FOMO. Viele kaufen dann emotional, nutzen zu viel Hebel oder vergessen Gewinnsicherung.</p><p>&#128204; Gute Bildung bedeutet: nicht nur Chancen sehen, sondern auch Ausstiegszonen, Risiko und Markt&#252;berhitzung verstehen.</p>",
+dca: "<h3>&#128176; DCA Beispiel mit 1.000 / 10.000 / 100.000 Euro</h3><p>&#128260; DCA bedeutet Dollar Cost Averaging: Man investiert nicht alles auf einmal, sondern teilt den Betrag in mehrere Tranchen auf. Das kann helfen, den Druck des perfekten Einstiegs zu reduzieren.</p><div class='grid'><div class='stat'><strong>1.000 Euro</strong><br>250 Euro Start, 250 Euro RÃ¼cksetzer, 250 Euro Akkumulation, 250 Euro BestÃ¤tigung/Reserve.</div><div class='stat'><strong>10.000 Euro</strong><br>2.500 Euro Start, 2.500 Euro RÃ¼cksetzer, 2.500 Euro Akkumulation, 2.500 Euro BestÃ¤tigung/Reserve.</div><div class='stat'><strong>100.000 Euro</strong><br>25.000 Euro Start, 25.000 Euro RÃ¼cksetzer, 25.000 Euro Akkumulation, 25.000 Euro BestÃ¤tigung/Reserve.</div></div><p>&#128204; Beispiel Bitcoin: Wenn der Markt schwankt, kaufst du mit derselben Euro-Summe bei fallenden Kursen mehr BTC und bei steigenden Kursen weniger BTC. Dadurch entsteht ein Durchschnittspreis.</p><p>&#9888;&#65039; Wichtig: DCA ist keine Garantie. Bei schlechten Projekten kann man auch mit DCA verlieren. Deshalb immer ProjektqualitÃ¤t, Zeithorizont, Risiko und eigene finanzielle Lage beachten. Keine Anlageberatung.</p><canvas id='dcaEducationChart' class='mini-chart'></canvas>",
+euphoria: "<h3>&#9888;&#65039; Euphorie einfach erkl&#228;rt</h3><p>&#129321; Euphorie ist oft eine sp&#228;te Marktphase. Fast alle sprechen &#252;ber Gewinne, Risiken werden untersch&#228;tzt und neue Anleger steigen ohne Plan ein.</p><p>&#128680; Warnzeichen: extreme Kursziele, sehr hoher Fear & Greed, Meme-Hype, hohe Hebel, kaum Skepsis und stark steigende Suchtrends.</p><p>&#128204; In dieser Phase geht es oft weniger darum, noch aggressiver zu werden, sondern eher darum, Risiko zu verstehen, Teilgewinne zu planen und nicht emotional zu handeln.</p><p>&#9888;&#65039; Keine Garantie: Euphorie kann l&#228;nger dauern als erwartet, aber sie ist historisch oft eine riskante Phase.</p>"
+};
+box.innerHTML = content[type] || "Keine Erkl&#228;rung verf&#252;gbar.";
+}
+
+
+function openCyclePhase(type) {
+const boxes = document.querySelectorAll("#cyclePhaseExplanation, .cycle-explanation-target");
+if (!boxes.length) return;
+const content = {
+capitulation: "<h3>&#128557; Kapitulation</h3><p>&#128201; Kapitulation ist oft eine extreme Angstphase. Viele Marktteilnehmer verkaufen nicht mehr nach Plan, sondern aus Panik, Unsicherheit oder weil sie keine Hoffnung mehr sehen.</p><p>&#128680; Typisch sind: sehr negative Stimmung, starke rote Kerzen, hohe Volatilit&#228;t, schlechte Nachrichten und das Gef&#252;hl, dass der Markt nie wieder steigen wird.</p><p>&#129504; Education: Solche Phasen k&#246;nnen in der N&#228;he von Tiefpunkten entstehen, aber niemand erkennt sie sicher in Echtzeit. Deshalb sind Cash-Management, kleine Positionsgr&#246;&#223;en und ein klarer Plan wichtiger als Heldentum.</p><p>&#9888;&#65039; Keine Anlageberatung: Kapitulation bedeutet nicht automatisch kaufen. Es ist eine Marktphase, die man verstehen sollte.</p>",
+bear: "<h3>&#128059; B&#228;renmarkt</h3><p>&#128059; Ein B&#228;renmarkt ist eine l&#228;ngere Phase, in der Kurse fallen, Erholungen oft wieder abverkauft werden und viele Anleger vorsichtig oder frustriert sind.</p><p>&#128202; Typisch: geringerer Hype, weniger neue Marktteilnehmer, fallende Trendlinien, niedrigere Hochs und eine defensive Marktstimmung.</p><p>&#128204; Education: B&#228;renm&#228;rkte sind oft die Zeit, in der man Projekte, Tokenomics, Risiko und Strategie in Ruhe studieren kann. Viele Fehler entstehen, wenn man versucht, jeden kleinen Bounce als neuen Bullrun zu handeln.</p>",
+accumulation: "<h3>&#128260; Akkumulation</h3><p>&#128260; Akkumulation ist oft eine ruhige Phase nach starken R&#252;ckg&#228;ngen. Der Markt bewegt sich seitw&#228;rts, viele verlieren Interesse und die Aufmerksamkeit ist niedrig.</p><p>&#129504; Gleichzeitig k&#246;nnten langfristige Marktteilnehmer langsam einsammeln. Hinweise k&#246;nnen stabilere Tiefs, nachlassender Verkaufsdruck, h&#246;heres Volumen an Unterst&#252;tzungen und eine langsame Verbesserung der Marktstruktur sein.</p><p>&#128176; DCA wird oft in solchen Phasen diskutiert: Statt alles auf einmal zu investieren, wird regelm&#228;&#223;ig ein kleiner Betrag investiert. Das kann den emotionalen Druck reduzieren, garantiert aber keine Gewinne.</p>",
+earlybull: "<h3>&#127793; Fr&#252;he Bullenphase</h3><p>&#127793; In der fr&#252;hen Bullenphase verbessert sich die Marktstruktur, w&#228;hrend viele noch skeptisch bleiben. Der Markt macht h&#246;here Tiefs, wichtige Widerst&#228;nde werden getestet und erste Narrative werden st&#228;rker.</p><p>&#128200; Typisch: steigendes Volumen, bessere Stimmung, erste starke Sektoren, aber noch keine breite Euphorie.</p><p>&#9888;&#65039; Education: Diese Phase ist schwer zu erkennen. Man sollte nicht blind FOMO handeln, sondern Best&#228;tigungen, Risiko und Positionsgr&#246;&#223;e beachten.</p>",
+bull: "<h3>&#128002; Bullenmarkt / Bullrun</h3><p>&#128002; Ein Bullrun ist eine starke Marktphase mit steigenden Kursen, positiver Stimmung und zunehmender Aufmerksamkeit. Viele Coins k&#246;nnen stark steigen, aber auch schnell korrigieren.</p><p>&#128293; Typisch: Medieninteresse, neue Marktteilnehmer, steigendes Volumen, starke Trends und wechselnde Narrative wie AI, DeFi, Gaming, RWA oder Meme-Coins.</p><p>&#128204; Education: Je weiter ein Bullrun l&#228;uft, desto wichtiger werden Teilgewinne, Stop-Regeln, kein zu hoher Hebel und emotionale Kontrolle.</p>",
+euphoria: "<h3>&#9888;&#65039; Euphorie</h3><p>&#129321; Euphorie ist oft die sp&#228;te und riskanteste Phase. Fast alle sind optimistisch, Kursziele werden extrem, Risiken werden klein geredet und viele steigen ohne Plan ein.</p><p>&#128680; Warnzeichen: extrem hoher Fear & Greed, Meme-Hype, hohe Hebel, starke Suchtrends, wenig Skepsis und das Gef&#252;hl, dass alles nur noch steigen kann.</p><p>&#129504; Education: Euphorie kann l&#228;nger dauern als erwartet, aber historisch ist sie oft eine Phase, in der Risiko stark steigt. Ein Plan f&#252;r Gewinnsicherung und Risikoreduktion kann hier besonders wichtig sein.</p>"
+};
+boxes.forEach(function(box) { box.innerHTML = content[type] || content.accumulation; });
+}
+
+
+function showPortfolioGuide(type) {
+const box = document.getElementById("portfolioGuideExplanation");
+if (!box) return;
+const content = {
+foundation: "<h3>&#8383; BTC / ETH als Fundament</h3><p>&#128204; Bitcoin und Ethereum werden oft als Fundament betrachtet, weil sie die gr&#246;&#223;ten Netzwerke, die h&#246;chste Aufmerksamkeit und die meiste Liquidit&#228;t haben. Das bedeutet nicht risikofrei, aber oft weniger spekulativ als sehr kleine Coins.</p><p>&#128202; In einem Beispielportfolio k&#246;nnten 40-60% in BTC/ETH liegen, damit nicht alles von kleinen Projekten abh&#228;ngt. Keine Anlageberatung.</p>",
+large: "<h3>&#128200; Large Caps</h3><p>&#128200; Large Caps sind gr&#246;&#223;ere Projekte mit hoher Marktkapitalisierung. Sie k&#246;nnen Wachstum bieten, sind aber meistens etablierter als kleine Coins.</p><p>&#9888;&#65039; Trotzdem k&#246;nnen auch Large Caps stark fallen. Deshalb bleibt Diversifikation und Positionsgr&#246;&#223;e wichtig.</p>",
+mid: "<h3>&#128640; Mid Caps</h3><p>&#128640; Mid Caps k&#246;nnen st&#228;rker wachsen, schwanken aber oft deutlich mehr. Hier wird Projektqualit&#228;t extrem wichtig: Use Case, Team, Tokenomics, Liquidit&#228;t und Community.</p><p>&#128204; In einem Beispiel k&#246;nnten 10-20% f&#252;r Mid Caps vorgesehen sein.</p>",
+small: "<h3>&#9888;&#65039; Small Caps / High Risk</h3><p>&#9888;&#65039; Small Caps sind sehr spekulativ. Sie k&#246;nnen stark steigen, aber auch komplett scheitern. Geringe Liquidit&#228;t, Hype, schlechte Tokenomics oder Fake-Volumen sind gro&#223;e Risiken.</p><p>&#128680; Deshalb im Beispiel nur 5-10% und niemals All-In.</p>",
+cash: "<h3>&#128181; Cash / Stablecoins</h3><p>&#128181; Cash oder Stablecoins k&#246;nnen helfen, flexibel zu bleiben. Wer immer 10-20% Reserve hat, kann Chancen nutzen und muss nicht unter Druck verkaufen.</p><p>&#129504; Cash ist langweilig, aber im Risikomanagement extrem wertvoll.</p>"
+};
+box.innerHTML = content[type] || content.foundation;
+}
+
+
+async function openMarketEducationChart(type) {
+const titleMap = {
+altseason: "Altcoin Season Index",
+btcdom: "Bitcoin Dominance",
+ethdom: "Ethereum Dominance",
+cryptorsi: "Durchschnittlicher Krypto RSI",
+rainbow: "Bitcoin Rainbow Chart"
+};
+document.getElementById("infoTitle").innerHTML = titleMap[type] || "Marktchart";
+document.getElementById("infoBody").innerHTML = '<div class="loading">Chart und ErklÃ¤rung werden geladen...</div>';
+document.getElementById("infoModal").style.display = "block";
+
+try {
+const res = await fetch("/api/market-education-chart?type=" + encodeURIComponent(type), {
+headers: { "x-app-password": getPassword() }
+});
+const data = await res.json();
+const today = data.date || new Date().toLocaleDateString("de-DE");
+
+document.getElementById("infoTitle").innerHTML = data.title || titleMap[type] || "Marktchart";
+document.getElementById("infoBody").innerHTML = `
+<div class="education-chart-card">
+<p><strong>Stand:</strong> ${today}</p>
+<p>${data.explanation || "Education-Daten werden vorbereitet."}</p>
+<div class="altcoin-meter"><div class="altcoin-meter-fill" style="width:${Math.max(0, Math.min(100, Number(data.currentValue || 0)))}%">${data.currentValue || 0}/100</div></div>
+<canvas id="marketEducationChart" class="mini-chart"></canvas>
+<p class="small">Quelle/Status: ${data.source || "Education-Modell"}</p>
+</div>
+`;
+
+drawEducationMarketChart(data);
+} catch (e) {
+document.getElementById("infoBody").innerHTML = '<p class="danger">Chart aktuell nicht verfÃ¼gbar.</p>';
+}
+}
+
+function drawEducationMarketChart(data) {
+const canvas = document.getElementById("marketEducationChart");
+if (!canvas) return;
+if (miniChart) miniChart.destroy();
+
+miniChart = new Chart(canvas, {
+type: "line",
+data: {
+labels: data.labels || [],
+datasets: [{
+label: data.title || "Index",
+data: data.values || [],
+borderColor: "#00ff99",
+backgroundColor: "rgba(0,255,153,0.08)",
+fill: true,
+tension: 0.25
+}]
+},
+options: {
+plugins: { legend: { display: false } },
+scales: { x: { ticks: { color: "white" } }, y: { ticks: { color: "white" } } }
+}
+});
+}
+
+function showAltcoinSeasonIndex(value) {
+const v = Math.max(0, Math.min(100, Number(value || 0)));
+let phase = "Bitcoin Phase";
+if (v >= 75) phase = "Altcoin Season";
+else if (v >= 50) phase = "Altcoins werden st&#228;rker";
+else if (v >= 25) phase = "&#220;bergangsphase";
+document.getElementById("infoTitle").innerHTML = "&#127754; Altcoin Season Index";
+document.getElementById("infoBody").innerHTML = `
+<p>&#127754; Der Altcoin Season Index zeigt vereinfacht, ob Altcoins aktuell st&#228;rker wirken als Bitcoin.</p>
+<div class="altcoin-meter"><div class="altcoin-meter-fill" style="width:${v}%">${v}/100</div></div>
+<p><strong>Aktuelle Einordnung:</strong> ${phase}</p>
+<div class="score-breakdown-list">
+<div><strong>0-25:</strong> Bitcoin dominiert. Viele Altcoins laufen schw&#228;cher.</div>
+<div><strong>25-50:</strong> &#220;bergang. Einzelne Altcoins k&#246;nnen laufen, aber keine breite Altcoin Season.</div>
+<div><strong>50-75:</strong> Altcoins werden st&#228;rker. Kapital rotiert h&#228;ufiger in Sektoren und Narrative.</div>
+<div><strong>75-100:</strong> Altcoin Season. Viele Altcoins outperformen Bitcoin, Risiko von &#220;berhitzung steigt.</div>
+</div>
+<p class="small">Hinweis: Diese Version nutzt interne N&#228;herungen aus Marktdaten. Sp&#228;ter kann ein echter BlockchainCenter/CoinMarketCap-Index per API angebunden werden.</p>
+`;
+document.getElementById("infoModal").style.display = "block";
+}
+
+function showBitcoinRainbowChart() {
+document.getElementById("infoTitle").innerHTML = "&#127752; Bitcoin Rainbow Chart";
+document.getElementById("infoBody").innerHTML = `
+<p>&#127752; Der Bitcoin Rainbow Chart ist ein langfristiges Bewertungsmodell. Er nutzt farbige Zonen, um grob zu zeigen, ob Bitcoin historisch eher hei&#223;, fair oder g&#252;nstig wirkte.</p>
+<div class="rainbow-chart">
+<div class="rainbow-band rainbow-red">&#128308; Rot: Sehr hei&#223; / stark &#252;berbewertet - FOMO Risiko hoch</div>
+<div class="rainbow-band rainbow-orange">&#128992; Orange: Markt wird hei&#223; - Vorsicht bei Euphorie</div>
+<div class="rainbow-band rainbow-yellow">&#128993; Gelb: Fair Value Zone - Markt wirkt neutraler</div>
+<div class="rainbow-band rainbow-green">&#128994; Gr&#252;n: Akkumulations-/Value-Zone - langfristig interessanter Bereich</div>
+<div class="rainbow-band rainbow-blue">&#128309; Blau: Deep Value - historisch extreme Angst / starke Unterbewertung</div>
+</div>
+<p>&#128204; Wichtig: Der Rainbow Chart ist kein exaktes Timing-Werkzeug. Er zeigt nur langfristige Bewertungszonen und kann falsch liegen.</p>
+<p><a href="https://www.blockchaincenter.net/en/bitcoin-rainbow-chart/" target="_blank">Bitcoin Rainbow Chart bei BlockchainCenter &#246;ffnen</a></p>
+<p class="small">Sp&#228;ter kann CoinPilot hier eine eigene logarithmische Kurve mit aktuellem Preis-Marker darstellen.</p>
+`;
+document.getElementById("infoModal").style.display = "block";
+}
+
+function applyLanguage() {
+const lang = localStorage.getItem("coinpilot_lang") || "DE";
+const isEN = lang === "EN";
+const setText = function(id, de, en) { const el = document.getElementById(id); if (el) el.innerHTML = isEN ? en : de; };
+const setPlaceholder = function(id, de, en) { const el = document.getElementById(id); if (el) el.placeholder = isEN ? en : de; };
+setText("loginText", "Bitte Passwort eingeben:", "Please enter password:");
+setText("loginButton", "Einloggen", "Login");
+setText("analyzeButton", "Analysieren", "Analyze");
+setText("watchlistJumpButton", "&#11088; Watchlist anzeigen", "&#11088; Show watchlist");
+setText("marketTitle", "&#127757; Markt&#252;bersicht", "&#127757; Market Overview");
+setText("trendingTitle", "&#128293; Trending Coins", "&#128293; Trending Coins");
+setText("gainersTitle", "&#128640; Top Gewinner", "&#128640; Top Gainers");
+setText("losersTitle", "&#128315; Top Verlierer", "&#128315; Top Losers");
+setText("lexiconTitle", "&#129504; CoinPilot Lexikon", "&#129504; CoinPilot Lexicon");
+setText("lexiconSubtitle", "Krypto- und Trading-Begriffe einfach erkl&#228;ren lassen.", "Explain crypto and trading terms in simple language.");
+setText("beginnerButton", "Anf&#228;nger-Modus", "Beginner Mode");
+setText("proButton", "Profi-Modus", "Pro Mode");
+setText("investmentGuideTitle", "&#128176; Investment Guide / DCA", "&#128176; Investment Guide / DCA");
+setText("investmentGuideText", "Allgemeine Bildung: DCA, Marktphasen und Risiko werden neutral erkl&#228;rt. Keine Anlageberatung.", "Education only: DCA, market phases and risk are explained neutrally. No financial advice.");
+setText("homeCycleTitle", "&#128200; Marktzyklus Education", "&#128200; Market Cycle Education");
+setText("homeCycleText", "Klicke auf eine Phase, um einfach zu lernen, was sie bedeutet. Die genaue Marktphase wird zus&#228;tzlich im Coin-Analysebereich berechnet.", "Click a phase to learn what it means. The exact market phase is also calculated in the coin analysis area.");
+setText("taxGuideTitle", "&#128221; Steuer-Guide f&#252;r Krypto", "&#128221; Crypto Tax Guide");
+setText("portfolioGuideTitle", "&#128202; Musterportfolio & Risiko-Management", "&#128202; Model Portfolio & Risk Management");
+setText("portfolioGuideIntro", "Education-Beispiel: So k&#246;nnte eine risiko-bewusste Krypto-Struktur aussehen. Keine Anlageberatung.", "Education example: This is how a risk-aware crypto structure could look. No financial advice.");
+setText("taxGuideIntro", "Allgemeine Bildung: Wir leisten keine Steuerberatung. Krypto-Transaktionen sollten sauber dokumentiert werden.", "General education: We do not provide tax advice. Crypto transactions should be documented cleanly.");
+setPlaceholder("coin", "Coin suchen, z.B. bitcoin, eth, kite", "Search coin, e.g. bitcoin, eth, kite");
+setPlaceholder("passwordInput", "Passwort", "Password");
+setPlaceholder("lexiconTerm", "z.B. Blockchain, Smart Contract, Fibonacci", "e.g. Blockchain, Smart Contract, Fibonacci");
+const deBtn = document.getElementById("languageDEButton");
+const enBtn = document.getElementById("languageENButton");
+if (deBtn) deBtn.classList.toggle("active", !isEN);
+if (enBtn) enBtn.classList.toggle("active", isEN);
+document.querySelectorAll("[data-de][data-en]").forEach(function(el) { el.innerHTML = isEN ? el.getAttribute("data-en") : el.getAttribute("data-de"); });
+}
+function setLanguage(lang) {
+localStorage.setItem("coinpilot_lang", lang);
+document.documentElement.lang = lang.toLowerCase();
+applyLanguage();
+if (lastData) renderResult(lastData);
+loadMarketOverview();
+}
+function toggleLanguage() { const current = localStorage.getItem("coinpilot_lang") || "DE"; setLanguage(current === "DE" ? "EN" : "DE"); }
+setTimeout(applyLanguage, 50);
+
+function openLegal(type) {
+const legal = {
+impressum: {
+title: "&#128196; Impressum",
+body: "<p><strong>Platzhalter Impressum:</strong> Bitte vor Launch durch deine echten Anbieterangaben ersetzen: Name/Firma, ladungsf&#228;hige Anschrift, E-Mail, ggf. Telefonnummer, Rechtsform, Vertretungsberechtigte, Umsatzsteuer-ID und Verantwortliche Person.</p>"
+},
+datenschutz: {
+title: "&#128274; Datenschutz",
+body: "<p><strong>Datenschutz-Platzhalter:</strong> Dieses Tool kann LocalStorage f&#252;r Watchlist, Sprache und Verlauf nutzen. Au&#223;erdem werden Daten an externe APIs wie CoinGecko und OpenAI gesendet, wenn Funktionen genutzt werden. Bitte vor Launch eine DSGVO-konforme Datenschutzerkl&#228;rung durch eine fachkundige Stelle pr&#252;fen lassen.</p>"
+},
+disclaimer: {
+title: "&#9888;&#65039; Disclaimer",
+body: "<p>Alle Inhalte dienen ausschlie&#223;lich Informations- und Bildungszwecken. Es handelt sich nicht um Anlageberatung, Finanzberatung, Rechtsberatung oder Steuerberatung. Es gibt keine Kauf- oder Verkaufsempfehlungen und keine Garantie f&#252;r Aktualit&#228;t, Richtigkeit oder Vollst&#228;ndigkeit. Kryptow&#228;hrungen, Trading, Hebelprodukte und Finanzinstrumente sind mit erheblichen Risiken bis hin zum Totalverlust verbunden. AI-generierte Inhalte k&#246;nnen unvollst&#228;ndig oder fehlerhaft sein. Nutzer treffen Entscheidungen eigenverantwortlich.</p>"
+}
+};
+
+const item = legal[type] || legal.disclaimer;
+document.getElementById("infoTitle").innerHTML = item.title;
+document.getElementById("infoBody").innerHTML = item.body;
+document.getElementById("infoModal").style.display = "block";
+}
+
+
+function openMarketScoreInfo(data) {
+document.getElementById("infoTitle").innerHTML = "Smart Signal Score erkl&#228;rt";
+document.getElementById("infoBody").innerHTML = `
+<p>Der Smart Signal Score ist kein Kaufsignal, sondern eine technische Orientierung. Er startet neutral und bewertet mehrere Faktoren.</p>
+<div class="score-breakdown-list">
+<div><strong>RSI:</strong> zeigt Momentum und m&#246;gliche &#220;berhitzung / &#220;berverkauf.</div>
+<div><strong>EMA Trend:</strong> pr&#252;ft, ob der Preis &#252;ber oder unter wichtigen Durchschnittslinien liegt.</div>
+<div><strong>24h Momentum:</strong> zeigt kurzfristige St&#228;rke oder Schw&#228;che.</div>
+<div><strong>Fear & Greed:</strong> hilft einzusch&#228;tzen, ob der Markt eher &#228;ngstlich oder gierig ist.</div>
+<div><strong>Risiko:</strong> kleinere Coins sind oft riskanter als gro&#223;e Assets.</div>
+</div>
+<p><strong>Interpretation:</strong> 0-35 eher vorsichtig, 35-65 neutral, 65-100 konstruktiver. Keine Anlageberatung.</p>
+`;
+document.getElementById("infoModal").style.display = "block";
 }
 
 function buildWhySignal(data) {
@@ -1198,81 +2476,65 @@ const diff = touchStartX - touchEndX;
 
 if (Math.abs(diff) < 50) return;
 
-if (diff > 0 && currentScreen < 6) showScreen(currentScreen + 1);
+if (diff > 0 && currentScreen < document.querySelectorAll(".screen").length - 1) showScreen(currentScreen + 1);
 if (diff < 0 && currentScreen > 0) showScreen(currentScreen - 1);
 });
 }
 
 const levelPlugin = {
-  id: "levelPlugin",
-  afterDraw: function (chart) {
-    if (!lastData) return;
+id: "levelPlugin",
+afterDraw: function (chart) {
+if (!lastData) return;
 
-    const levelsData = getLongShortLevels(lastData);
+const levelsData = getLongShortLevels(lastData);
 
-    const ctx = chart.ctx;
-    const yScale = chart.scales.y;
-    const xStart = chart.chartArea.left;
-    const xEnd = chart.chartArea.right;
+const ctx = chart.ctx;
+const yScale = chart.scales.y;
+const xStart = chart.chartArea.left;
+const xEnd = chart.chartArea.right;
 
-    let levels = [];
+let levels = [];
 
-    if (chartMode === "long") {
-      levels = [
-        { label: "Long Entry", value: Number(levelsData.entry), color: "#00e5ff" },
-        { label: "Long SL", value: Number(levelsData.longSL), color: "#ff4d4d" },
-        { label: "Long TP1", value: Number(levelsData.longTP1), color: "#ffd700" },
-        { label: "Long TP2", value: Number(levelsData.longTP2), color: "#ffa500" },
-        { label: "Long TP3", value: Number(levelsData.longTP3), color: "#c77dff" }
-      ];
-    }
+if (chartMode === "long" || chartMode === "both") {
+levels = levels.concat([
+{ label: "Long Entry", value: Number(levelsData.entry), color: "#00ff99" },
+{ label: "Long SL", value: Number(levelsData.longSL), color: "#ff4d4d" },
+{ label: "Long TP1", value: Number(levelsData.longTP1), color: "#ffe066" },
+{ label: "Long TP2", value: Number(levelsData.longTP2), color: "#ff9f1c" },
+{ label: "Long TP3", value: Number(levelsData.longTP3), color: "#c77dff" }
+]);
+}
 
-    if (chartMode === "short") {
-      levels = [
-        { label: "Short Entry", value: Number(levelsData.entry), color: "#00e5ff" },
-        { label: "Short SL", value: Number(levelsData.shortSL), color: "#ff4d4d" },
-        { label: "Short TP1", value: Number(levelsData.shortTP1), color: "#ffd700" },
-        { label: "Short TP2", value: Number(levelsData.shortTP2), color: "#ffa500" },
-        { label: "Short TP3", value: Number(levelsData.shortTP3), color: "#c77dff" }
-      ];
-    }
+if (chartMode === "short" || chartMode === "both") {
+levels = levels.concat([
+{ label: "Short Entry", value: Number(levelsData.entry), color: "#66d9ff" },
+{ label: "Short SL", value: Number(levelsData.shortSL), color: "#ff6b6b" },
+{ label: "Short TP1", value: Number(levelsData.shortTP1), color: "#66d9ff" },
+{ label: "Short TP2", value: Number(levelsData.shortTP2), color: "#4db8ff" },
+{ label: "Short TP3", value: Number(levelsData.shortTP3), color: "#1e90ff" }
+]);
+}
 
-    if (chartMode === "both") {
-      levels = [
-        { label: "Long Entry", value: Number(levelsData.entry), color: "#00e5ff" },
-        { label: "Long SL", value: Number(levelsData.longSL), color: "#ff4d4d" },
-        { label: "Long TP1", value: Number(levelsData.longTP1), color: "#ffd700" },
-        { label: "Long TP2", value: Number(levelsData.longTP2), color: "#ffa500" },
-        { label: "Long TP3", value: Number(levelsData.longTP3), color: "#c77dff" },
+levels.forEach(function (level) {
+const y = yScale.getPixelForValue(level.value);
 
-        { label: "Short Entry", value: Number(levelsData.entry), color: "#00e5ff" },
-        { label: "Short SL", value: Number(levelsData.shortSL), color: "#ff4d4d" },
-        { label: "Short TP1", value: Number(levelsData.shortTP1), color: "#ffd700" },
-        { label: "Short TP2", value: Number(levelsData.shortTP2), color: "#ffa500" },
-        { label: "Short TP3", value: Number(levelsData.shortTP3), color: "#c77dff" }
-      ];
-    }
+if (y < chart.chartArea.top || y > chart.chartArea.bottom) return;
 
-    levels.forEach(function (level) {
-      const y = yScale.getPixelForValue(level.value);
-
-      if (y < chart.chartArea.top || y > chart.chartArea.bottom) return;
-
-      ctx.save();
-      ctx.beginPath();
-      ctx.moveTo(xStart, y);
-      ctx.lineTo(xEnd, y);
-      ctx.strokeStyle = level.color;
-      ctx.lineWidth = 1.5;
-      ctx.setLineDash([6, 6]);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.fillStyle = level.color;
-      ctx.font = "12px Arial";
-      ctx.fillText(level.label + " $" + money(level.value), xStart + 8, y - 5);
-      ctx.restore();
-    });
-  }
+ctx.save();
+ctx.beginPath();
+ctx.moveTo(xStart, y);
+ctx.lineTo(xEnd, y);
+ctx.strokeStyle = level.color;
+ctx.lineWidth = 1.5;
+ctx.setLineDash([6, 6]);
+ctx.stroke();
+ctx.setLineDash([]);
+ctx.fillStyle = level.color;
+ctx.font = "12px Arial";
+ctx.fillText(level.label + " $" + money(level.value), xStart + 8, y - 5);
+ctx.restore();
+});
+}
 };
 
 Chart.register(levelPlugin);
@@ -1287,39 +2549,23 @@ const levels = getLongShortLevels(data);
 let visibleLevels = [];
 
 if (chartMode === "long" || chartMode === "both") {
-  visibleLevels = visibleLevels.concat([
-    levels.entry,
-    levels.longSL,
-    levels.longTP1,
-    levels.longTP2,
-    levels.longTP3
-  ]);
+visibleLevels = visibleLevels.concat([
+levels.entry,
+levels.longSL,
+levels.longTP1,
+levels.longTP2,
+levels.longTP3
+]);
 }
 
 if (chartMode === "short" || chartMode === "both") {
-  visibleLevels = visibleLevels.concat([
-    levels.entry,
-    levels.shortSL,
-    levels.shortTP1,
-    levels.shortTP2,
-    levels.shortTP3
-  ]);
-}
-
-if (chartMode === "both") {
-  visibleLevels = [
-    levels.entry,
-
-    levels.longSL,
-    levels.longTP1,
-    levels.longTP2,
-    levels.longTP3,
-
-    levels.shortSL,
-    levels.shortTP1,
-    levels.shortTP2,
-    levels.shortTP3
-  ];
+visibleLevels = visibleLevels.concat([
+levels.entry,
+levels.shortSL,
+levels.shortTP1,
+levels.shortTP2,
+levels.shortTP3
+]);
 }
 
 const allValues = prices.concat(visibleLevels);
@@ -1425,7 +2671,12 @@ return (
 }).join("");
 } catch (e) {
 box.innerHTML = list.map(function (coin) {
-return '<button class="pill" onclick="quickAnalyze(\'' + coin + '\')">' + coin + '</button>';
+return '<div class="coin-card" onclick="quickAnalyze(\'' + coin + '\')">' +
+'<div style="width:24px;height:24px;border-radius:50%;background:#30364a;display:flex;align-items:center;justify-content:center;font-size:11px;">' + coin.slice(0,2).toUpperCase() + '</div>' +
+'<div><strong>' + coin + '</strong><br>' +
+'<span class="small">Preis / 24h / Rang werden geladen, sobald die API wieder verf&#252;gbar ist.</span></div>' +
+'<span class="star active" onclick="toggleWatchlist(\'' + coin + '\', event)">&#9733;</span>' +
+'</div>';
 }).join("");
 }
 }
@@ -1470,14 +2721,16 @@ return;
 
 box.innerHTML =
 '<button class="secondary-btn" onclick="clearHistory()">Alle Analysen l&#246;schen</button>' +
+'<div class="history-grid">' +
 history.map(function (item, index) {
 return (
-'<div class="coin-card" onclick="quickAnalyze(\'' + item.id + '\')">' +
-'<div><strong>' + item.name + '</strong><br><span class="small">' + item.time + '</span></div>' +
+'<div class="history-item" onclick="quickAnalyze(\'' + item.id + '\')">' +
+'<strong>' + item.name + '</strong><br><span class="small">' + item.time + '</span><br>' +
 '<button class="secondary-btn" onclick="deleteHistoryItem(' + index + ', event)">L&#246;schen</button>' +
 '</div>'
 );
-}).join("");
+}).join("") +
+'</div>';
 }
 
 async function loadTrending() {
@@ -1599,11 +2852,12 @@ box.innerHTML =
 '<div class="stat clickable" onclick="openExchangeModal()">&#127974; B&#246;rsen<br>' + bigNumber(data.markets) + '<div class="hint">Klicken f&#252;r B&#246;rsen & Geb&#252;hren</div></div>' +
 '<div class="stat clickable" onclick="openInfo(\'marketcap\')">&#127757; Gesamt Market Cap<br>$' + bigNumber(data.totalMarketCap) + '<br><span class="' + (data.marketCapChange24h >= 0 ? 'positive' : 'negative') + '">' + Number(data.marketCapChange24h).toFixed(2) + '%</span><div class="hint">Klicken f&#252;r Erkl&#228;rung</div></div>' +
 '<div class="stat clickable" onclick="openInfo(\'volume\')">&#128181; 24h Volumen<br>$' + bigNumber(data.totalVolume24h) + '<div class="hint">Klicken f&#252;r Erkl&#228;rung</div></div>' +
-'<div class="stat clickable" onclick="openInfo(\'btcdom\')">&#8383; BTC Dominanz<br>' + data.btcDominance + '%<div class="hint">Klicken f&#252;r Erkl&#228;rung</div></div>' +
-'<div class="stat clickable" onclick="openInfo(\'ethdom\')">&#926; ETH Dominanz<br>' + data.ethDominance + '%<div class="hint">Klicken f&#252;r Erkl&#228;rung</div></div>' +
+'<div class="stat clickable" onclick="openMarketEducationChart(\'btcdom\')">&#8383; BTC Dominanz<br>' + data.btcDominance + '%<div class="hint">Klicken f&#252;r Erkl&#228;rung</div></div>' +
+'<div class="stat clickable" onclick="openMarketEducationChart(\'ethdom\')">&#926; ETH Dominanz<br>' + data.ethDominance + '%<div class="hint">Klicken f&#252;r Erkl&#228;rung</div></div>' +
 '<div class="stat clickable" onclick="openInfo(\'feargreed\')">&#128552; Fear & Greed<br>' + data.fearGreed + '<div class="bar-wrap"><div class="bar" style="width:' + data.fearGreedValue + '%"></div></div><div class="hint">Klicken f&#252;r Erkl&#228;rung</div></div>' +
-'<div class="stat clickable" onclick="openInfo(\'altstrength\')">&#127754; Altcoin St&#228;rke<br>' + data.altcoinStrength + '/100<div class="hint">Klicken f&#252;r Erkl&#228;rung</div></div>' +
-'<div class="stat clickable" onclick="openInfo(\'cryptorsi\')">&#128201; &#216; Krypto RSI<br>' + data.averageCryptoRsi + '/100<div class="hint">Klicken f&#252;r Erkl&#228;rung</div></div>' +
+'<div class="stat clickable" onclick="openMarketEducationChart(\'altseason\')">&#127754; Altcoin Season Index<br>' + data.altcoinStrength + '/100<div class="hint">Chart + Erkl&#228;rung &#246;ffnen</div></div>' +
+'<div class="stat clickable" onclick="openMarketEducationChart(\'rainbow\')">&#127752; Bitcoin Rainbow Chart<br>Langfristige Zonen<div class="hint">Farben + Education &#246;ffnen</div></div>' +
+'<div class="stat clickable" onclick="openMarketEducationChart(\'cryptorsi\')">&#128201; &#216; Krypto RSI<br>' + data.averageCryptoRsi + '/100<div class="hint">Klicken f&#252;r Erkl&#228;rung</div></div>' +
 '</div>';
 } catch (e) {
 box.innerHTML = '<p class="small">Markt&#252;bersicht aktuell nicht verf&#252;gbar.</p>';
@@ -1614,8 +2868,8 @@ function drawMiniMarketChart(title) {
 const canvas = document.getElementById("miniInfoChart");
 if (!canvas) return;
 
-const labels = ["2017", "2018", "2020", "2021", "2022", "2024", "2025"];
-const data = [0.6, 0.13, 0.75, 3.0, 0.8, 2.5, 3.2];
+const labels = ["2013", "2015", "2017", "2018", "2020", "2021", "2022", "2024", "2025", "2026"];
+const data = [0.001, 0.004, 0.6, 0.13, 0.75, 3.0, 0.8, 2.5, 3.2, 2.2];
 
 if (miniChart) miniChart.destroy();
 
@@ -1654,16 +2908,14 @@ body: `
 `
 },
 marketcap: {
-title: "&#127757; Market Cap ausf&#252;hrlich erkl&#228;rt",
+title: "&#127757; Gesamt-Market-Cap einfach erkl&#228;rt",
 body: `
-<p>&#127757; <strong>Market Cap</strong> bedeutet Marktkapitalisierung.</p>
-<p>Formel: <strong>Preis &#215; umlaufende Menge = Market Cap</strong>.</p>
-<p>Beispiel: Wenn ein Coin 10 &#8364; kostet und 1.000.000 Coins im Umlauf sind, liegt die Market Cap bei 10.000.000 &#8364;.</p>
-<p>&#128994; Gro&#223;e Market Cap: oft stabiler, meistens weniger extreme Bewegungen.</p>
-<p>&#128993; Mittlere Market Cap: mehr Wachstum m&#246;glich, aber auch mehr Risiko.</p>
-<p>&#128308; Kleine Market Cap: hohe Chancen, aber auch sehr hohes Risiko.</p>
+<p>&#127757; Die <strong>gesamte Krypto-Market-Cap</strong> ist die Summe der Marktkapitalisierung aller gelisteten Coins und Tokens.</p>
+<p>Sie zeigt also nicht nur Bitcoin oder einen einzelnen Coin, sondern den ungef&#228;hren Gesamtwert des gesamten Kryptomarktes.</p>
+<p>&#128202; Wenn die Gesamt-Market-Cap steigt, flie&#223;t oft mehr Kapital in den Kryptomarkt. Wenn sie f&#228;llt, wird Kapital abgezogen oder Bewertungen sinken.</p>
+<p>&#128204; Wichtig: Die Zahl h&#228;ngt von Datenquellen, gelisteten Coins und Preisen ab. Sie ist eine starke Orientierung, aber keine perfekte Messung.</p>
 <canvas id="miniInfoChart" class="mini-chart"></canvas>
-<p class="small">Beispielhafte Darstellung zur Erkl&#228;rung. F&#252;r echte historische Gesamtdaten nutzen wir sp&#228;ter eine separate Datenquelle.</p>
+<p class="small">Die Beispielkurve zeigt grob historische Marktphasen. F&#252;r professionelle Langfristdaten k&#246;nnen sp&#228;ter weitere Quellen angebunden werden.</p>
 `,
 chart: true
 },
@@ -1724,6 +2976,12 @@ body: `
 }
 };
 
+if (!content[type] && type === "riskScore") {
+content[type] = { title: "&#9888;&#65039; Risiko-Score", body: "<p>Der Risiko-Score ist eine einfache Einordnung auf Basis von Market Cap, Volumen, Momentum und technischer Lage. Kleine Coins k&#246;nnen st&#228;rker schwanken als gro&#223;e Coins. Der Score ist nur Bildung und keine Empfehlung.</p>" };
+}
+if (!content[type] && type === "coinVolume") {
+content[type] = { title: "&#128181; 24h Volumen beim einzelnen Coin", body: "<p>Das 24h Volumen zeigt, wie viel dieser einzelne Coin in den letzten 24 Stunden gehandelt wurde. Hohes Volumen kann bessere Liquidit&#228;t bedeuten. Niedriges Volumen kann Slippage, Manipulation und schwerere Ausstiege bedeuten.</p>" };
+}
 const item = content[type];
 
 document.getElementById("infoTitle").innerHTML = item.title;
@@ -1763,7 +3021,6 @@ return '<div class="stat">' +
 'Taker: ' + ex.taker + '<br>' +
 'KYC: ' + ex.kyc + '<br>' +
 'Karte: ' + ex.card + '<br>' +
-(ex.cardUrl ? '<a href="' + ex.cardUrl + '" target="_blank">Kreditkarte öffnen</a><br>' : '') +
 'Futures: ' + ex.futures + '<br>' +
 'Staking: ' + ex.staking + '<br>' +
 '<a href="' + ex.url + '" target="_blank">Geb&#252;hren-Seite &#246;ffnen</a>' +
@@ -1781,7 +3038,6 @@ document.getElementById("exchangeModal").style.display = "none";
 }
 
 async function explainTerm(mode) {
-  window.followupCount = 0;
 const term = document.getElementById("lexiconTerm").value || "Blockchain";
 const box = document.getElementById("lexiconResult");
 
@@ -1799,7 +3055,8 @@ headers: {
 },
 body: JSON.stringify({
 term: term,
-mode: mode
+mode: mode,
+lang: getLang()
 })
 });
 
@@ -1815,6 +3072,8 @@ box.innerHTML = `
 <h3>&#128172; Folgefrage stellen</h3>
 <input id="lexiconFollowup" placeholder="z.B. Warum ist das wichtig?">
 <button onclick="askLexiconFollowup('${mode}')">Weiterfragen</button>
+<button class="secondary-btn" onclick="clearLexiconFollowups()">Folgefragen l&#246;schen</button>
+<button class="secondary-btn" onclick="clearLexiconAll()">Neues Thema</button>
 <div id="lexiconFollowupResult"></div>
 `;
 
@@ -1833,6 +3092,21 @@ box.innerHTML = '<p class="danger">Erkl&#228;rung aktuell nicht verf&#252;gbar.<
 }
 }
 
+
+function clearLexiconFollowups() {
+const box = document.getElementById("lexiconFollowupResult");
+if (box) box.innerHTML = "";
+window.followupCount = 0;
+lexiconHistory = lexiconHistory.slice(0, 2);
+}
+
+function clearLexiconAll() {
+const box = document.getElementById("lexiconResult");
+if (box) box.innerHTML = "";
+window.followupCount = 0;
+lexiconHistory = [];
+}
+
 async function askLexiconFollowup(mode) {
 const followup = document.getElementById("lexiconFollowup").value;
 const box = document.getElementById("lexiconFollowupResult");
@@ -1842,15 +3116,14 @@ if (!followup) return;
 if (!window.followupCount) window.followupCount = 0;
 
 if (window.followupCount >= 5) {
-  box.innerHTML += '<div class="lexicon-chat"><p class="danger">❌ Maximal 5 Folgefragen erreicht. Bitte starte neu.</p></div>';
-  return;
+box.innerHTML += '<div class="lexicon-chat"><p class="danger">Maximal 5 Folgefragen erreicht. Bitte starte ein neues Thema.</p></div>';
+return;
 }
 
 window.followupCount++;
-
 lexiconHistory.push("Folgefrage " + window.followupCount + ": " + followup);
 
-box.innerHTML += '<div class="loading">&#129504; Antwort wird erstellt...</div>';
+box.innerHTML += '<div class="lexicon-chat"><strong>Du:</strong><pre>' + followup + '</pre></div><div class="loading">&#129504; Antwort wird erstellt...</div>';
 
 try {
 const combinedQuestion =
@@ -1866,7 +3139,8 @@ headers: {
 },
 body: JSON.stringify({
 term: combinedQuestion,
-mode: mode
+mode: mode,
+lang: getLang()
 })
 });
 
@@ -1874,17 +3148,28 @@ const data = await res.json();
 
 lexiconHistory.push("Antwort: " + data.explanation);
 
-box.innerHTML = `
+const loadingElements = box.querySelectorAll(".loading");
+if (loadingElements.length) loadingElements[loadingElements.length - 1].remove();
+
+box.innerHTML += `
 <div class="lexicon-chat">
+<strong>CoinPilot:</strong>
 <pre>${data.explanation}</pre>
 </div>
 `;
 
 document.getElementById("lexiconFollowup").value = "";
 } catch (e) {
-box.innerHTML = '<p class="danger">Antwort aktuell nicht verf&#252;gbar.</p>';
+box.innerHTML += '<p class="danger">Antwort aktuell nicht verf&#252;gbar.</p>';
 }
 }
+window.addEventListener("click", function(event) {
+const infoModal = document.getElementById("infoModal");
+const exchangeModal = document.getElementById("exchangeModal");
+if (event.target === infoModal) closeInfoModal();
+if (event.target === exchangeModal) closeExchangeModal();
+});
+
 </script>
 
 </body>
